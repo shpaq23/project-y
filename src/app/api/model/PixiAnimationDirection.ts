@@ -1,15 +1,10 @@
-import { AnimatedSprite, Rectangle, Texture } from 'pixi.js';
+import { AnimatedSprite, Texture } from 'pixi.js';
 
 export class PixiAnimationDirection {
 
 	private readonly ANIMATION_SPEED = 0.2;
-	private readonly ANIMATION_SCALE = 4.0;
-
-	private readonly leftAnimatedSprite = new AnimatedSprite(this.left);
-	private readonly rightAnimatedSprite = new AnimatedSprite(this.right);
-	private readonly upAnimatedSprite = new AnimatedSprite(this.up);
-	private readonly downAnimatedSprite = new AnimatedSprite(this.down);
-
+	private readonly ANIMATION_SCALE = 2.0;
+	private readonly ANIMATION_Z_INDEX = 10;
 
 	constructor(
 		private readonly left: Array<Texture>,
@@ -17,42 +12,41 @@ export class PixiAnimationDirection {
 		private readonly up: Array<Texture>,
 		private readonly down: Array<Texture>
 	) {
-		this.initialize();
 	}
 
 	getLeftAnimatedSprite(): AnimatedSprite {
-		return this.leftAnimatedSprite;
+		const animatedSprite = new AnimatedSprite(this.left);
+		animatedSprite.scale.x = this.ANIMATION_SCALE;
+		animatedSprite.scale.y = this.ANIMATION_SCALE;
+		animatedSprite.zIndex = this.ANIMATION_Z_INDEX;
+		animatedSprite.animationSpeed = this.ANIMATION_SPEED;
+		return animatedSprite;
 	}
 
 	getRightAnimatedSprite(): AnimatedSprite {
-		return this.rightAnimatedSprite;
+		const animatedSprite = new AnimatedSprite(this.right);
+		animatedSprite.scale.x = this.ANIMATION_SCALE;
+		animatedSprite.scale.y = this.ANIMATION_SCALE;
+		animatedSprite.zIndex = this.ANIMATION_Z_INDEX;
+		animatedSprite.animationSpeed = this.ANIMATION_SPEED;
+		return animatedSprite;
 	}
 
 	getUpAnimatedSprite(): AnimatedSprite {
-		return this.upAnimatedSprite;
+		const animatedSprite = new AnimatedSprite(this.up);
+		animatedSprite.scale.x = this.ANIMATION_SCALE;
+		animatedSprite.scale.y = this.ANIMATION_SCALE;
+		animatedSprite.zIndex = this.ANIMATION_Z_INDEX;
+		animatedSprite.animationSpeed = this.ANIMATION_SPEED;
+		return animatedSprite;
 	}
 
 	getDownAnimatedSprite(): AnimatedSprite {
-		return this.downAnimatedSprite;
-	}
-
-	private initialize(): void {
-		this.leftAnimatedSprite.scale.x = this.ANIMATION_SCALE;
-		this.leftAnimatedSprite.scale.y = this.ANIMATION_SCALE;
-		this.leftAnimatedSprite.animationSpeed = this.ANIMATION_SPEED;
-
-
-		this.rightAnimatedSprite.scale.x = this.ANIMATION_SCALE;
-		this.rightAnimatedSprite.scale.y = this.ANIMATION_SCALE;
-		this.rightAnimatedSprite.animationSpeed = this.ANIMATION_SPEED;
-
-		this.upAnimatedSprite.scale.x = this.ANIMATION_SCALE;
-		this.upAnimatedSprite.scale.y = this.ANIMATION_SCALE;
-		this.upAnimatedSprite.animationSpeed = this.ANIMATION_SPEED;
-
-		this.downAnimatedSprite.scale.x = this.ANIMATION_SCALE;
-		this.downAnimatedSprite.scale.y = this.ANIMATION_SCALE;
-		this.downAnimatedSprite.animationSpeed = this.ANIMATION_SPEED;
-
+		const animatedSprite = new AnimatedSprite(this.down);
+		animatedSprite.scale.x = this.ANIMATION_SCALE;
+		animatedSprite.scale.y = this.ANIMATION_SCALE;
+		animatedSprite.zIndex = this.ANIMATION_Z_INDEX;
+		animatedSprite.animationSpeed = this.ANIMATION_SPEED;
+		return animatedSprite;
 	}
 }

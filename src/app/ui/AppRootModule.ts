@@ -4,13 +4,13 @@ import { RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRootComponent } from './AppRootComponent';
-import { PixiComponent } from './pixi/PixiComponent';
+import { ModelViewerComponent } from './model-viewer/ModelViewerComponent';
 
 @NgModule({
 	imports: [
 		BrowserModule,
 		FontAwesomeModule,
-		PixiComponent,
+		ModelViewerComponent,
 		RouterOutlet
 	],
 	declarations: [

@@ -1,3 +1,15 @@
-<pixi-component></pixi-component>
+<model-viewer (initialized)="modelInitialized($event)"></model-viewer>
+
+
+<button (click)="moveLeft()">Move Left</button>
+<button (click)="moveRight()">Move Right</button>
+<button (click)="moveUp()">Move Up</button>
+<button (click)="moveDown()">Move Down</button>
+
+<button (click)="slashLeft()">Slash Left</button>
+<button (click)="slashRight()">Slash Right</button>
+<button (click)="slashUp()">Slash Up</button>
+<button (click)="slashDown()">Slash Down</button>
+
 
 <router-outlet/>
