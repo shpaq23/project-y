@@ -5,13 +5,11 @@ import { PixiAnimationDirection } from './PixiAnimationDirection';
 
 export class ModelController {
 
-	private currentTexture: Array<AnimatedSprite> = this.getWalkDownSprites();
+	private readonly currentTexture: Array<AnimatedSprite> = this.getWalkDownSprites();
 
-	private currentSlashBigTexture?: AnimatedSprite;
+	private readonly currentSlashBigTexture: AnimatedSprite | undefined = this.slashBig?.getDownAnimatedSprite();
 
-	private currentWalkBigTexture?: AnimatedSprite;
-
-	private animationInProgress = false;
+	private readonly currentWalkBigTexture: AnimatedSprite | undefined = this.walkBig?.getDownAnimatedSprite();
 
 
 	constructor(
@@ -21,53 +19,64 @@ export class ModelController {
 		private readonly walkBig?: PixiAnimationDirection,
 		private readonly slashBig?: PixiAnimationDirection
 	) {
-		this.addCurrentToStage();
+		this.initialize();
 	}
 
 	walkLeft(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getWalkLeftSprites();
+		this.currentTexture.forEach((sprite, index) => {
+			sprite.textures = this.getWalkLeftSprites()[index].textures;
+		});
 
-		if (this.walkBig) {
-			this.currentWalkBigTexture = this.walkBig.getLeftAnimatedSprite();
+		if (this.currentWalkBigTexture) {
+			this.currentWalkBigTexture.textures = this.walkBig!.getLeftAnimatedSprite().textures;
 			this.currentWalkBigTexture.zIndex = 1;
 			this.currentWalkBigTexture.x = -128 + 64;
 			this.currentWalkBigTexture.y = -128 + 64;
 		}
 		this.addCurrentToStage();
+		this.currentTexture.forEach((texture) => {
+			texture.x -= 64;
+		});
 		return this.play();
 	}
 
 	walkRight(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getWalkRightSprites();
 
-		if (this.walkBig) {
-			this.currentWalkBigTexture = this.walkBig.getRightAnimatedSprite();
+		this.currentTexture.forEach((sprite, index) => {
+			sprite.textures = this.getWalkRightSprites()[index].textures;
+		});
+
+		if (this.currentWalkBigTexture) {
+			this.currentWalkBigTexture.textures = this.walkBig!.getRightAnimatedSprite().textures;
 			this.currentWalkBigTexture.zIndex = 1;
 			this.currentWalkBigTexture.x = -128 + 64;
 			this.currentWalkBigTexture.y = -128 + 64;
 		}
 
 		this.addCurrentToStage();
+		this.currentTexture.forEach((texture) => {
+			texture.x += 64;
+		});
 		return this.play();
 	}
 
 	walkUp(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getWalkUpSprites();
 
-		if (this.walkBig) {
-			this.currentWalkBigTexture = this.walkBig.getUpAnimatedSprite();
+		this.currentTexture.forEach((sprite, index) => {
+			sprite.textures = this.getWalkUpSprites()[index].textures;
+		});
+
+		if (this.currentWalkBigTexture) {
+			this.currentWalkBigTexture.textures = this.walkBig!.getUpAnimatedSprite().textures;
 			this.currentWalkBigTexture.zIndex = 1;
 			this.currentWalkBigTexture.x = -128 + 64;
 			this.currentWalkBigTexture.y = -128 + 64;
@@ -78,14 +87,16 @@ export class ModelController {
 	}
 
 	walkDown(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getWalkDownSprites();
 
-		if (this.walkBig) {
-			this.currentWalkBigTexture = this.walkBig.getDownAnimatedSprite();
+		this.currentTexture.forEach((sprite, index) => {
+			sprite.textures = this.getWalkDownSprites()[index].textures;
+		});
+
+		if (this.currentWalkBigTexture) {
+			this.currentWalkBigTexture.textures = this.walkBig!.getDownAnimatedSprite().textures;
 			this.currentWalkBigTexture.zIndex = 1;
 			this.currentWalkBigTexture.x = -128 + 64;
 			this.currentWalkBigTexture.y = -128 + 64;
@@ -95,72 +106,69 @@ export class ModelController {
 	}
 
 	slashLeft(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getSlashLeftSprites();
 
-		if (this.slashBig) {
-			this.currentSlashBigTexture = this.slashBig.getLeftAnimatedSprite();
-			this.currentSlashBigTexture.x = -192 + 64;
-			this.currentSlashBigTexture.y = -192 + 64;
-		}
+		// this.currentTexture = this.getSlashLeftSprites();
+		//
+		// if (this.slashBig) {
+		// 	this.currentSlashBigTexture = this.slashBig.getLeftAnimatedSprite();
+		// 	this.currentSlashBigTexture.x = -192 + 64;
+		// 	this.currentSlashBigTexture.y = -192 + 64;
+		// }
 		this.addCurrentToStage();
 
 		return this.play();
 	}
 
 	slashRight(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getSlashRightSprites();
-
-		if (this.slashBig) {
-			this.currentSlashBigTexture = this.slashBig.getRightAnimatedSprite();
-			this.currentSlashBigTexture.x = -192 + 64;
-			this.currentSlashBigTexture.y = -192 + 64;
-		}
+		// this.currentTexture = this.getSlashRightSprites();
+		//
+		// if (this.slashBig) {
+		// 	this.currentSlashBigTexture = this.slashBig.getRightAnimatedSprite();
+		// 	this.currentSlashBigTexture.x = -192 + 64;
+		// 	this.currentSlashBigTexture.y = -192 + 64;
+		// }
 		this.addCurrentToStage();
 		return this.play();
 	}
 
 	slashUp(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getSlashUpSprites();
-
-		if (this.slashBig) {
-			this.currentSlashBigTexture = this.slashBig.getUpAnimatedSprite();
-			this.currentSlashBigTexture.x = -192 + 64;
-			this.currentSlashBigTexture.y = -192 + 64;
-		}
+		// this.currentTexture = this.getSlashUpSprites();
+		//
+		// if (this.slashBig) {
+		// 	this.currentSlashBigTexture = this.slashBig.getUpAnimatedSprite();
+		// 	this.currentSlashBigTexture.x = -192 + 64;
+		// 	this.currentSlashBigTexture.y = -192 + 64;
+		// }
 		this.addCurrentToStage();
 		return this.play();
 	}
 
 	slashDown(): Observable<void> {
-		if (this.animationInProgress) {
+		if (this.currentTexture[0].playing) {
 			return of();
 		}
-		this.removeCurrentFromStage();
-		this.currentTexture = this.getSlashDownSprites();
-
-		if (this.slashBig) {
-			this.currentSlashBigTexture = this.slashBig.getDownAnimatedSprite();
-			this.currentSlashBigTexture.x = -192 + 64;
-			this.currentSlashBigTexture.y = -192 + 64;
-		}
+		// this.currentTexture = this.getSlashDownSprites();
+		//
+		// if (this.slashBig) {
+		// 	this.currentSlashBigTexture = this.slashBig.getDownAnimatedSprite();
+		// 	this.currentSlashBigTexture.x = -192 + 64;
+		// 	this.currentSlashBigTexture.y = -192 + 64;
+		// }
 
 		this.addCurrentToStage();
 		return this.play();
 	}
 
-	private addCurrentToStage(): void {
+	private initialize(): void {
 		this.application.stage.addChild(...this.currentTexture);
 		if (this.currentSlashBigTexture) {
 			this.application.stage.addChild(this.currentSlashBigTexture);
@@ -170,30 +178,24 @@ export class ModelController {
 		}
 	}
 
-	private removeCurrentFromStage(): void {
-		this.currentTexture.forEach((sprite) => {
-			sprite.removeFromParent();
-		});
-		if (this.currentSlashBigTexture) {
-			this.currentSlashBigTexture.removeFromParent();
-			this.currentSlashBigTexture = undefined;
-		}
-
-		if (this.currentWalkBigTexture) {
-			this.currentWalkBigTexture.removeFromParent();
-			this.currentWalkBigTexture = undefined;
-		}
+	private addCurrentToStage(): void {
+		return;
+		// this.application.stage.addChild(...this.currentTexture);
+		// if (this.currentSlashBigTexture) {
+		// 	this.application.stage.addChild(this.currentSlashBigTexture);
+		// }
+		// if (this.currentWalkBigTexture) {
+		// 	this.application.stage.addChild(this.currentWalkBigTexture);
+		// }
 	}
 
 	private play(): Observable<void> {
-		this.animationInProgress = true;
 		return new Observable((observer) => {
 			this.currentTexture.forEach((sprite) => {
 				sprite.play();
 				sprite.loop = false;
 				sprite.onComplete = () => {
 					sprite.currentFrame = 0;
-					this.animationInProgress = false;
 					observer.next();
 					observer.complete();
 				};

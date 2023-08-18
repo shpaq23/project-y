@@ -1,3 +1,4 @@
+import { animate } from '@angular/animations';
 import { AnimatedSprite, Texture } from 'pixi.js';
 
 export class PixiAnimationDirection {
