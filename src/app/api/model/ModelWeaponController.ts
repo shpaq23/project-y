@@ -1,155 +1,235 @@
-import { AnimatedSprite, Application } from 'pixi.js';
+import { AnimatedSprite, Application, Sprite, Texture } from 'pixi.js';
 import { AnimationModelHelper } from './AnimationModelHelper';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
 
 export class ModelWeaponController {
 
 	private readonly helper = new AnimationModelHelper();
-
 	private readonly animationModel = this.helper.getWeaponModelAnimation(this.weapon);
 
-
 	// size 64x64
-	private universalNormalAnimation: AnimatedSprite | undefined;
-	private universalBehindAnimation: AnimatedSprite | undefined;
-
+	private currentNormalAnimations: Array<AnimatedSprite> = [
+		new AnimatedSprite([Texture.EMPTY]),
+		new AnimatedSprite([Texture.EMPTY])
+	];
+	private currentNormalIdle: Array<Sprite> = [
+		new AnimatedSprite([Texture.EMPTY]),
+		new AnimatedSprite([Texture.EMPTY])
+	];
 
 	// size 128x128 or 192x192
-	private walkAnimation: AnimatedSprite | undefined;
-	private walkBehindAnimation: AnimatedSprite | undefined;
-
-	private slashAnimation: AnimatedSprite | undefined;
-	private slashBehindAnimation: AnimatedSprite | undefined;
-
-	private thrustAnimation: AnimatedSprite | undefined;
-	private thrustBehindAnimation: AnimatedSprite | undefined;
-
-
-
-	// size 64x64
-	private currentNormalAnimations: Array<AnimatedSprite> = [];
-
-	// size 128x128 or 192x192
-	private currentBigAnimations: Array<AnimatedSprite> = [];
+	private currentBigAnimation: Array<AnimatedSprite> = [
+		new AnimatedSprite([Texture.EMPTY]),
+		new AnimatedSprite([Texture.EMPTY])
+	];
+	private currentBigIdle: Array<Sprite> = [
+		new AnimatedSprite([Texture.EMPTY]),
+		new AnimatedSprite([Texture.EMPTY])
+	];
 
 
 	constructor(
 		private readonly application: Application,
-		private readonly weapon: CharacterWeaponAnimation
+		private readonly weapon: CharacterWeaponAnimation,
+		private readonly characterSprite: AnimatedSprite
 	) {
 		this.initialize();
 	}
 
 	walkLeft(): void {
-		this.currentNormalAnimations[0].textures = this.animationModel.universal!.normal.walk.animation.left.textures;
-		this.currentNormalAnimations[1].textures = this.animationModel.universal!.behind!.walk.animation.left.textures;
-		this.play();
+		this.resolveAnimation('walk', 'left');
 	}
 
 
 	walkDown(): void {
-		this.currentNormalAnimations[0].textures = this.animationModel.universal!.normal.walk.animation.down.textures;
-		this.currentNormalAnimations[0].zIndex = 11;
-		this.currentNormalAnimations[1].textures = this.animationModel.universal!.behind!.walk.animation.down.textures;
+		this.resolveAnimation('walk', 'down');
+	}
 
-		this.play();
+	walkRight(): void {
+		this.resolveAnimation('walk', 'right');
+	}
+
+	walkUp(): void {
+		this.resolveAnimation('walk', 'up');
+	}
+
+	slashLeft(): void {
+		this.resolveAnimation('slash', 'left');
+
+	}
+
+	slashRight(): void {
+		this.resolveAnimation('slash', 'right');
+	}
+
+	slashUp(): void {
+		this.resolveAnimation('slash', 'up');
+	}
+
+	slashDown(): void {
+		this.resolveAnimation('slash', 'down');
+	}
+
+	private resolveAnimation(animation: 'walk' | 'slash' | 'thrust', direction: 'up' | 'down' | 'right' | 'left', initial = false): void {
+		if (this.animationModel.universal) {
+			this.currentNormalAnimations[0].textures = this.animationModel.universal.normal[animation].animation[direction].textures;
+			this.copySpriteProperties(this.currentNormalAnimations[0], this.animationModel.universal.normal[animation].animation[direction]);
+
+			this.currentNormalIdle[0].texture = this.animationModel.universal.normal[animation].idle[direction].texture;
+			this.copySpriteProperties(this.currentNormalIdle[0], this.animationModel.universal.normal[animation].idle[direction]);
+
+			if (this.animationModel.universal.behind) {
+				this.currentNormalAnimations[1].textures = this.animationModel.universal.behind[animation].animation[direction].textures;
+				this.copySpriteProperties(this.currentNormalAnimations[1], this.animationModel.universal.behind[animation].animation[direction]);
+
+				this.currentNormalIdle[1].texture = this.animationModel.universal.behind[animation].idle[direction].texture;
+				this.copySpriteProperties(this.currentNormalIdle[1], this.animationModel.universal.behind[animation].idle[direction]);
+			}
+			if (!initial) {
+				this.playNormal();
+			}
+		} else {
+			if (!initial) {
+				this.hideNormal();
+			}
+		}
+
+		if (this.animationModel[animation]) {
+			this.currentBigAnimation[0].textures = this.animationModel[animation]!.normal.animation[direction].textures;
+			this.copySpriteProperties(this.currentBigAnimation[0], this.animationModel[animation]!.normal.animation[direction]);
+
+			this.currentBigIdle[0].texture = this.animationModel[animation]!.normal.idle[direction].texture;
+			this.copySpriteProperties(this.currentBigIdle[0], this.animationModel[animation]!.normal.idle[direction]);
+
+			if (this.animationModel[animation]!.behind) {
+				this.currentBigAnimation[1].textures = this.animationModel[animation]!.behind!.animation[direction].textures;
+				this.copySpriteProperties(this.currentBigAnimation[1], this.animationModel[animation]!.behind!.animation[direction]);
+
+				this.currentBigIdle[1].texture = this.animationModel[animation]!.behind!.idle[direction].texture;
+				this.copySpriteProperties(this.currentBigIdle[1], this.animationModel[animation]!.behind!
+			}
+			if (!initial) {
+				this.playBig();
+			}
+		} else {
+			if (!initial) {
+				this.hideBig();
+			}
+		}
+	}
+
+	private copySpriteProperties(copyTo: Sprite | AnimatedSprite, copyFrom: Sprite | AnimatedSprite): void {
+		copyTo.scale.set(copyFrom.scale.x, copyFrom.scale.y);
+		copyTo.zIndex = copyFrom.zIndex;
+		copyTo.x = copyFrom.x;
+		copyTo.y = copyFrom.y;
+		if (copyFrom instanceof AnimatedSprite && copyTo instanceof AnimatedSprite) {
+			copyTo.animationSpeed = copyFrom.animationSpeed;
+			copyTo.loop = copyFrom.loop;
+		}
 	}
 
 
+	private playNormal(): void {
 
+		this.currentNormalIdle.forEach((sprite) => {
+			sprite.visible = false;
+		});
 
-
-	private play(): void {
 		this.currentNormalAnimations.forEach((sprite) => {
+			sprite.visible = true;
 			sprite.onComplete = () => {
-				sprite.currentFrame = 0;
+				this.playNormalIdle();
 			};
 			sprite.play();
 		});
 
-		this.currentBigAnimations.forEach((sprite) => {
-			sprite.loop = false;
-			sprite.onComplete = () => {
-				sprite.currentFrame = 0;
-			};
-			sprite.play();
-		});
+
 	}
 
+	private playBig(): void {
+		this.currentBigIdle.forEach((sprite) => {
+			sprite.visible = false;
+		});
 
+		this.currentBigAnimation.forEach((sprite) => {
+			sprite.visible = true;
+			sprite.onComplete = () => {
+				this.playBigIdle();
+			};
+			sprite.play();
+		});
+
+	}
 
 	private initialize(): void {
-		this.setAnimations();
-		this.setCurrentAnimations();
-		this.application.stage.addChild(...this.currentNormalAnimations, ...this.currentBigAnimations);
+		this.setInitialAnimations();
+		this.addToStage();
+		this.playNormalIdle();
+
 	}
 
-	private setAnimations(): void {
-		const weaponModelAnimation = this.helper.getWeaponModelAnimation(this.weapon);
-
-		if (weaponModelAnimation.universal) {
-			this.universalNormalAnimation = weaponModelAnimation.universal.normal.walk.animation.down;
-			if (weaponModelAnimation.universal.behind) {
-				this.universalBehindAnimation = weaponModelAnimation.universal.behind.walk.animation.down;
-			}
+	private addToStage(): void {
+		if (this.currentNormalAnimations.length > 0) {
+			this.application.stage.addChild(...this.currentNormalAnimations);
+		}
+		if (this.currentNormalIdle.length > 0) {
+			this.application.stage.addChild(...this.currentNormalIdle);
 		}
 
-		if (weaponModelAnimation.walk) {
-			this.walkAnimation = weaponModelAnimation.walk.normal.animation.down;
-			if (weaponModelAnimation.walk.behind) {
-				this.walkBehindAnimation = weaponModelAnimation.walk.behind.animation.down;
-			}
+		if (this.currentBigAnimation.length > 0) {
+			this.application.stage.addChild(...this.currentBigAnimation);
 		}
 
-		if (weaponModelAnimation.slash) {
-			this.slashAnimation = weaponModelAnimation.slash.normal.animation.down;
-			if (weaponModelAnimation.slash.behind) {
-				this.slashBehindAnimation = weaponModelAnimation.slash.behind.animation.down;
-			}
-		}
-
-		if (weaponModelAnimation.thrust) {
-			this.thrustAnimation = weaponModelAnimation.thrust.normal.animation.down;
-			if (weaponModelAnimation.thrust.behind) {
-				this.thrustBehindAnimation = weaponModelAnimation.thrust.behind.animation.down;
-			}
+		if (this.currentBigIdle.length > 0) {
+			this.application.stage.addChild(...this.currentBigIdle);
 		}
 	}
 
-	private setCurrentAnimations(): void {
-		this.currentNormalAnimations = [];
-		this.currentBigAnimations = [];
-
-		if (this.universalNormalAnimation) {
-			this.currentNormalAnimations.push(this.universalNormalAnimation);
-		}
-
-		if (this.universalBehindAnimation) {
-			this.currentNormalAnimations.push(this.universalBehindAnimation);
-		}
-
-		if (this.walkAnimation) {
-			this.currentBigAnimations.push(this.walkAnimation);
-		}
-
-		if (this.walkBehindAnimation) {
-			this.currentBigAnimations.push(this.walkBehindAnimation);
-		}
-
-		if (this.slashAnimation) {
-			this.currentBigAnimations.push(this.slashAnimation);
-		}
-
-		if (this.slashBehindAnimation) {
-			this.currentBigAnimations.push(this.slashBehindAnimation);
-		}
-
-		if (this.thrustAnimation) {
-			this.currentBigAnimations.push(this.thrustAnimation);
-		}
-
-		if (this.thrustBehindAnimation) {
-			this.currentBigAnimations.push(this.thrustBehindAnimation);
-		}
+	private setInitialAnimations(): void {
+		this.resolveAnimation('walk', 'down', true);
 	}
+
+
+	private hideNormal(): void {
+		this.currentNormalIdle.forEach((sprite) => {
+			sprite.visible = false;
+		});
+
+		this.currentNormalAnimations.forEach((sprite) => {
+			sprite.visible = false;
+		});
+	}
+
+	private hideBig(): void {
+		this.currentBigIdle.forEach((sprite) => {
+			sprite.visible = false;
+		});
+
+		this.currentBigAnimation.forEach((sprite) => {
+			sprite.visible = false;
+		});
+	}
+
+
+	private playNormalIdle(): void {
+		this.currentNormalIdle.forEach((sprite) => {
+			sprite.visible = true;
+		});
+
+		this.currentNormalAnimations.forEach((sprite) => {
+			sprite.visible = false;
+		});
+	}
+
+	private playBigIdle(): void {
+		this.currentBigIdle.forEach((sprite) => {
+			sprite.visible = true;
+		});
+
+		this.currentBigAnimation.forEach((sprite) => {
+			sprite.visible = false;
+		});
+	}
+
 }

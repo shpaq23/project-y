@@ -1,5 +1,4 @@
-import { AnimatedSprite, Application, Sprite } from 'pixi.js';
-import { Observable, of } from 'rxjs';
+import { AnimatedSprite, Application, Sprite, Texture } from 'pixi.js';
 import { AnimationModelHelper } from './AnimationModelHelper';
 import { CharacterBasicAnimation } from './CharacterBasicAnimation';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
@@ -9,14 +8,14 @@ import { ModelWeaponController } from './ModelWeaponController';
 export class ModelController {
 
 	private readonly helper = new AnimationModelHelper();
-
 	private readonly animationModel = this.helper.getBasicModelAnimation(this.basic);
 
 	private readonly currentAnimatedSprites: Array<AnimatedSprite> = this.helper.getBasicModelAnimation(this.basic).walk.animation.down;
-
 	private readonly currentIdleSprite: Array<Sprite> = this.helper.getBasicModelAnimation(this.basic).walk.idle.down;
 
-	private readonly weaponController: ModelWeaponController | undefined = this.weapon ? new ModelWeaponController(this.application, this.weapon) : undefined;
+	private readonly weaponController: ModelWeaponController | undefined = this.weapon
+		? new ModelWeaponController(this.application, this.weapon, this.currentAnimatedSprites[0])
+		: undefined;
 
 	constructor(
 		private readonly application: Application,
@@ -26,133 +25,135 @@ export class ModelController {
 		this.initialize();
 	}
 
-	walkLeft(): Observable<void> {
+	walkLeft(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.walk.animation.left[index].textures;
-		});
-
-		//
-
-		// this.currentAnimatedSprites.forEach((texture) => {
-		// 	texture.x -= 64;
-		// });
+		this.setWalkTexture('left');
 		this.weaponController?.walkLeft();
-		return this.play();
+		this.play();
 	}
 
-	walkRight(): Observable<void> {
+	walkRight(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.walk.animation.right[index].textures;
-		});
-
-
-		// this.currentAnimatedSprites.forEach((texture) => {
-		// 	texture.x += 64;
-		// });
-		return this.play();
+		this.setWalkTexture('right');
+		this.weaponController?.walkRight();
+		this.play();
 	}
 
-	walkUp(): Observable<void> {
+	walkUp(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.walk.animation.up[index].textures;
-		});
-
-
-		return this.play();
+		this.setWalkTexture('up');
+		this.weaponController?.walkUp();
+		this.play();
 	}
 
-	walkDown(): Observable<void> {
+	walkDown(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.walk.animation.down[index].textures;
-		});
-
+		this.setWalkTexture('down');
 		this.weaponController?.walkDown();
-		return this.play();
+		this.play();
 	}
 
-	slashLeft(): Observable<void> {
+	slashLeft(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.slash.animation.left[index].textures;
-		});
-
-
-		return this.play();
+		this.setSlashTexture('left');
+		this.weaponController?.slashLeft();
+		this.play();
 	}
 
-	slashRight(): Observable<void> {
+	slashRight(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.slash.animation.right[index].textures;
-		});
-
-
-		return this.play();
+		this.setSlashTexture('right');
+		this.weaponController?.slashRight();
+		this.play();
 	}
 
-	slashUp(): Observable<void> {
+	slashUp(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.slash.animation.up[index].textures;
-		});
-
-		return this.play();
+		this.setSlashTexture('up');
+		this.weaponController?.slashUp();
+		this.play();
 	}
 
-	slashDown(): Observable<void> {
+	slashDown(): void {
 		if (this.currentAnimatedSprites[0].playing) {
-			return of();
+			return;
 		}
 
-		this.currentAnimatedSprites.forEach((sprite, index) => {
-			sprite.textures = this.animationModel.slash.animation.down[index].textures;
-		});
+		this.setSlashTexture('down');
+		this.weaponController?.slashDown();
+		this.play();
+	}
 
+	private setSlashTexture(direction: 'up' | 'down' | 'left' | 'right'): void {
+		for (let i = 0; i < this.currentAnimatedSprites.length; i++) {
+			let texture: Texture;
+			let textures: Array<Texture>;
+			texture = this.animationModel.slash.idle[direction][i].texture;
+			textures = this.animationModel.slash.animation[direction][i].textures as Array<Texture>;
+			this.currentAnimatedSprites[i].textures = textures;
+			this.currentIdleSprite[i].texture = texture;
 
-		return this.play();
+		}
+	}
+
+	private setWalkTexture(direction: 'up' | 'down' | 'left' | 'right'): void {
+		for (let i = 0; i < this.currentAnimatedSprites.length; i++) {
+			let texture: Texture;
+			let textures: Array<Texture>;
+			texture = this.animationModel.walk.idle[direction][i].texture;
+			textures = this.animationModel.walk.animation[direction][i].textures as Array<Texture>;
+			this.currentAnimatedSprites[i].textures = textures;
+			this.currentIdleSprite[i].texture = texture;
+		}
 	}
 
 	private initialize(): void {
 		this.application.stage.addChild(...this.currentAnimatedSprites);
+		this.application.stage.addChild(...this.currentIdleSprite);
+		this.playIdle();
 	}
 
-	private play(): Observable<void> {
-		return new Observable((observer) => {
-			this.currentAnimatedSprites.forEach((sprite) => {
-				sprite.play();
-				sprite.onComplete = () => {
-					sprite.currentFrame = 0;
-					observer.next();
-					observer.complete();
-				};
-			});
+	private play(): void {
+		this.currentIdleSprite.forEach(sprite => {
+			sprite.visible = false;
+		});
+
+		this.currentAnimatedSprites.forEach((sprite, index) => {
+			sprite.visible = true;
+			sprite.play();
+			sprite.onComplete = () => {
+				this.playIdle();
+			};
+		});
+	}
+
+	private playIdle(): void {
+		this.currentAnimatedSprites.forEach(sprite => {
+			sprite.visible = false;
+		});
+		this.currentIdleSprite.forEach(sprite => {
+			sprite.visible = true;
 		});
 	}
 }

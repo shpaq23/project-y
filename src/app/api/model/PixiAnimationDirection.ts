@@ -3,6 +3,7 @@ import { AnimatedSprite, Sprite, Texture } from 'pixi.js';
 export class PixiAnimationDirection {
 
 	private readonly ANIMATION_SPEED = 0.2;
+	// 2.0 => -64px
 	private readonly ANIMATION_SCALE = 2.0;
 
 	private readonly CHARACTER_Z_INDEX = 10;
@@ -74,13 +75,18 @@ export class PixiAnimationDirection {
 	private setSpriteProperties(animatedSprite: AnimatedSprite | Sprite): void {
 		animatedSprite.scale.x = this.ANIMATION_SCALE;
 		animatedSprite.scale.y = this.ANIMATION_SCALE;
-		// behind means that the character need to be behind, so if something is behind it's actually in front
 		animatedSprite.zIndex = this.CHARACTER_Z_INDEX;
 		if (this.type === 'weapon') {
 			animatedSprite.zIndex = this.isBehind ? this.WEAPON_Z_INDEX_BEHIND : this.WEAPON_Z_INDEX;
+
+			if (this.size) {
+				animatedSprite.x -= (this.ANIMATION_SCALE * (this.size / 4));
+				animatedSprite.y -= (this.ANIMATION_SCALE * (this.size / 4));
+			}
 		}
 
 		if (animatedSprite instanceof AnimatedSprite) {
+			animatedSprite.loop = false;
 			animatedSprite.animationSpeed = this.ANIMATION_SPEED;
 		}
 	}

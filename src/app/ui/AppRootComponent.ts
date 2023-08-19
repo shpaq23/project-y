@@ -21,34 +21,34 @@ export class AppRootComponent {
 
 
 	moveLeft(): void {
-		this.modelController.walkLeft().subscribe();
+		this.modelController.walkLeft();
 	}
 
 	moveRight(): void {
-		this.modelController.walkRight().subscribe();
+		this.modelController.walkRight();
 	}
 
 	moveUp() {
-		this.modelController.walkUp().subscribe();
+		this.modelController.walkUp();
 	}
 
 	moveDown() {
-		this.modelController.walkDown().subscribe();
+		this.modelController.walkDown();
 	}
 
 	slashLeft() {
-		this.modelController.slashLeft().subscribe();
+		this.modelController.slashLeft();
 	}
 
 	slashRight() {
-		this.modelController.slashRight().subscribe();
+		this.modelController.slashRight();
 	}
 
 	slashUp() {
-		this.modelController.slashUp().subscribe();
+		this.modelController.slashUp();
 	}
 
 	slashDown() {
-		this.modelController.slashDown().subscribe();
+		this.modelController.slashDown();
 	}
 }

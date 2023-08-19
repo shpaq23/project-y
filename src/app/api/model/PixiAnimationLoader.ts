@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Application, BaseTexture, Rectangle, Texture } from 'pixi.js';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
-import { longSword } from './LPCWeapon';
+import { katana, longSword } from './LPCWeapon';
 import { ModelController } from './ModelController';
 import { PixiAnimation } from './PixiAnimation';
 import { PixiAnimationDirection } from './PixiAnimationDirection';
