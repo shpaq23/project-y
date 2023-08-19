@@ -1,73 +1,14 @@
 import { AnimatedSprite, Sprite } from 'pixi.js';
+import { BasicModelAnimation } from './animation/BasicModelAnimation';
+import { BasicModelSimpleAnimation } from './animation/BasicModelSimpleAnimation';
+import { WeaponModelAnimation } from './animation/WeaponModelAnimation';
 import { CharacterBasicAnimation } from './CharacterBasicAnimation';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
 import { PixiAnimation } from './PixiAnimation';
 
-export type BasicModelAnimation = {
-	walk: BasicModelAnimationDirection
-	slash: BasicModelAnimationDirection
-	thrust: BasicModelAnimationDirection
-};
-
-export type BasicModelAnimationDirection = {
-	animation: {
-		left: Array<AnimatedSprite>,
-		right: Array<AnimatedSprite>,
-		up: Array<AnimatedSprite>,
-		down: Array<AnimatedSprite>,
-	}
-	idle: {
-		left: Array<Sprite>,
-		right: Array<Sprite>,
-		up: Array<Sprite>,
-		down: Array<Sprite>,
-	}
-}
-
-
-export type BasicModelSimpleAnimation = {
-	walk: BasicModelSimpleAnimationDirection,
-	slash: BasicModelSimpleAnimationDirection,
-	thrust: BasicModelSimpleAnimationDirection
-}
-
-export type BasicModelSimpleAnimationDirection = {
-	animation: {
-		left: AnimatedSprite,
-		right: AnimatedSprite,
-		up: AnimatedSprite,
-		down: AnimatedSprite,
-	}
-	idle: {
-		left: Sprite,
-		right: Sprite,
-		up: Sprite,
-		down: Sprite,
-	}
-}
-
-
-export type WeaponModelAnimation = {
-	universal?: {
-		normal: BasicModelSimpleAnimation;
-		behind?: BasicModelSimpleAnimation;
-	};
-
-	walk?: {
-		normal: BasicModelSimpleAnimationDirection;
-		behind?: BasicModelSimpleAnimationDirection;
-	}
-
-	slash?: {
-		normal: BasicModelSimpleAnimationDirection;
-		behind?: BasicModelSimpleAnimationDirection;
-	}
-
-	thrust?: {
-		normal: BasicModelSimpleAnimationDirection;
-		behind?: BasicModelSimpleAnimationDirection;
-	}
-
+type SpritesType = {
+	idle: Array<Sprite>;
+	animation: Array<AnimatedSprite>;
 }
 
 export class AnimationModelHelper {
@@ -309,8 +250,7 @@ export class AnimationModelHelper {
 
 	}
 
-
-	private getWalkLeftSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getWalkLeftSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -320,7 +260,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getWalkRightSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getWalkRightSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -330,7 +270,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getWalkUpSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getWalkUpSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -340,7 +280,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getWalkDownSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getWalkDownSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -350,7 +290,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getSlashLeftSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getSlashLeftSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -360,7 +300,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getSlashRightSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getSlashRightSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -370,7 +310,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getSlashUpSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getSlashUpSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -380,7 +320,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getSlashDownSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getSlashDownSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -390,7 +330,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getThrustLeftSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getThrustLeftSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -400,7 +340,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getThrustRightSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getThrustRightSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -410,7 +350,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getThrustUpSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getThrustUpSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {
@@ -420,7 +360,7 @@ export class AnimationModelHelper {
 		return { animation: animatedSprites, idle: sprites };
 	}
 
-	private getThrustDownSprites(animations: Array<PixiAnimation>): { animation: Array<AnimatedSprite>, idle: Array<Sprite> } {
+	private getThrustDownSprites(animations: Array<PixiAnimation>): SpritesType {
 		const animatedSprites: Array<AnimatedSprite> = [];
 		const sprites: Array<Sprite> = [];
 		animations.forEach(((animation: PixiAnimation) => {

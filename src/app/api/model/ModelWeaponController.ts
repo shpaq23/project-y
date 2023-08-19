@@ -1,4 +1,6 @@
 import { AnimatedSprite, Application, Sprite, Texture } from 'pixi.js';
+import { Animation } from './animation/Animation';
+import { AnimationDirection } from './animation/AnimationDirection';
 import { AnimationModelHelper } from './AnimationModelHelper';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
 
@@ -30,47 +32,49 @@ export class ModelWeaponController {
 
 	constructor(
 		private readonly application: Application,
-		private readonly weapon: CharacterWeaponAnimation,
-		private readonly characterSprite: AnimatedSprite
+		private readonly weapon: CharacterWeaponAnimation
 	) {
 		this.initialize();
 	}
 
 	walkLeft(): void {
-		this.resolveAnimation('walk', 'left');
+		this.resolveAnimation(Animation.walk, AnimationDirection.left);
 	}
 
 
 	walkDown(): void {
-		this.resolveAnimation('walk', 'down');
+		this.resolveAnimation(Animation.walk, AnimationDirection.down);
 	}
 
 	walkRight(): void {
-		this.resolveAnimation('walk', 'right');
+		this.resolveAnimation(Animation.walk, AnimationDirection.right);
 	}
 
 	walkUp(): void {
-		this.resolveAnimation('walk', 'up');
+		this.resolveAnimation(Animation.walk, AnimationDirection.up);
 	}
 
 	slashLeft(): void {
-		this.resolveAnimation('slash', 'left');
-
+		this.resolveAnimation(Animation.slash, AnimationDirection.left);
 	}
 
 	slashRight(): void {
-		this.resolveAnimation('slash', 'right');
+		this.resolveAnimation(Animation.slash, AnimationDirection.right);
 	}
 
 	slashUp(): void {
-		this.resolveAnimation('slash', 'up');
+		this.resolveAnimation(Animation.slash, AnimationDirection.up);
 	}
 
 	slashDown(): void {
-		this.resolveAnimation('slash', 'down');
+		this.resolveAnimation(Animation.slash, AnimationDirection.down);
 	}
 
-	private resolveAnimation(animation: 'walk' | 'slash' | 'thrust', direction: 'up' | 'down' | 'right' | 'left', initial = false): void {
+	private resolveAnimation(animation: Animation, direction: AnimationDirection, initial = false): void {
+		if (this.currentNormalAnimations[0].playing || this.currentBigAnimation[1].playing) {
+			return;
+		}
+
 		if (this.animationModel.universal) {
 			this.currentNormalAnimations[0].textures = this.animationModel.universal.normal[animation].animation[direction].textures;
 			this.copySpriteProperties(this.currentNormalAnimations[0], this.animationModel.universal.normal[animation].animation[direction]);
@@ -106,7 +110,7 @@ export class ModelWeaponController {
 				this.copySpriteProperties(this.currentBigAnimation[1], this.animationModel[animation]!.behind!.animation[direction]);
 
 				this.currentBigIdle[1].texture = this.animationModel[animation]!.behind!.idle[direction].texture;
-				this.copySpriteProperties(this.currentBigIdle[1], this.animationModel[animation]!.behind!
+				this.copySpriteProperties(this.currentBigIdle[1], this.animationModel[animation]!.behind!.idle[direction]);
 			}
 			if (!initial) {
 				this.playBig();
@@ -187,7 +191,7 @@ export class ModelWeaponController {
 	}
 
 	private setInitialAnimations(): void {
-		this.resolveAnimation('walk', 'down', true);
+		this.resolveAnimation(Animation.walk, AnimationDirection.down, true);
 	}
 
 

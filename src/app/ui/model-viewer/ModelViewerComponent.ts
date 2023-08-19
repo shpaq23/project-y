@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Application } from 'pixi.js';
-import { ModelController } from '../../api/model/ModelController';
+import { CharacterModel } from '../../api/model/CharacterModel';
 import { PixiAnimationLoader } from '../../api/model/PixiAnimationLoader';
 
 @Component({
@@ -22,13 +22,13 @@ export class ModelViewerComponent implements OnInit {
 	width: number = 256;
 
 	@Output()
-	readonly initialized = new EventEmitter<ModelController>();
+	readonly initialized = new EventEmitter<CharacterModel>();
 
 
 	private game!: Application;
 
 
-	private modelAnimationController!: ModelController;
+	private modelAnimationController!: CharacterModel;
 
 	constructor(
 		private readonly pixiAnimationLoader: PixiAnimationLoader,

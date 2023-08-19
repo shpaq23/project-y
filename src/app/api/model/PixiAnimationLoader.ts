@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Application, BaseTexture, Rectangle, Texture } from 'pixi.js';
+import { CharacterModel } from './CharacterModel';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
 import { katana, longSword } from './LPCWeapon';
-import { ModelController } from './ModelController';
 import { PixiAnimation } from './PixiAnimation';
 import { PixiAnimationDirection } from './PixiAnimationDirection';
 
@@ -30,7 +30,7 @@ export class PixiAnimationLoader {
 	private readonly DEAD_FRAMES_START = 20;
 
 
-	getCharacterAnimation(game: Application): ModelController {
+	getCharacterAnimation(game: Application): CharacterModel {
 		const bodyUrl: string = 'assets/body/bodies/male/universal.png';
 		const headUrl: string = 'assets/head/heads/human_male/universal.png';
 
@@ -38,12 +38,12 @@ export class PixiAnimationLoader {
 		const bodyAnimation = this.getAnimation(bodyUrl, 'character');
 		const headAnimation = this.getAnimation(headUrl, 'character');
 		const characterBasicAnimation = { body: bodyAnimation, head: headAnimation };
-		return new ModelController(game, characterBasicAnimation, this.getWeaponAnimation());
+		return new CharacterModel(game, characterBasicAnimation, this.getWeaponAnimation());
 
 	}
 
 	private getWeaponAnimation(): CharacterWeaponAnimation {
-		const weapon = longSword;
+		const weapon = katana;
 		const weaponAnimation: CharacterWeaponAnimation = {};
 		if (weapon.universal) {
 			weaponAnimation.universal = {
