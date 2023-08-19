@@ -35,51 +35,49 @@ export class PixiAnimationLoader {
 		const headUrl: string = 'assets/head/heads/human_male/universal.png';
 
 
-		const bodyAnimation = this.getAnimation(bodyUrl);
-		const headAnimation = this.getAnimation(headUrl);
-		const bowAnimation = this.getBowAnimation();
-		const weaponAnimation = this.getWeaponAnimation();
+		const bodyAnimation = this.getAnimation(bodyUrl, 'character');
+		const headAnimation = this.getAnimation(headUrl, 'character');
 		const characterBasicAnimation = { body: bodyAnimation, head: headAnimation };
-		return new ModelController(game, characterBasicAnimation, this.getWeaponAnimation2(), bowAnimation, weaponAnimation);
+		return new ModelController(game, characterBasicAnimation, this.getWeaponAnimation());
 
 	}
 
-	private getWeaponAnimation2(): CharacterWeaponAnimation {
+	private getWeaponAnimation(): CharacterWeaponAnimation {
 		const weapon = longSword;
 		const weaponAnimation: CharacterWeaponAnimation = {};
 		if (weapon.universal) {
 			weaponAnimation.universal = {
-				normal: this.getAnimation(weapon.universal.normal)
+				normal: this.getAnimation(weapon.universal.normal, 'weapon')
 			};
 			if (weapon.universal.behind) {
-				weaponAnimation.universal.behind = this.getAnimation(weapon.universal.behind, true);
+				weaponAnimation.universal.behind = this.getAnimation(weapon.universal.behind, 'weapon', true);
 			}
 		}
 
 		if (weapon.walk) {
 			weaponAnimation.walk = {
-				normal: this.getWalkAnimation(weapon.walk.normal, weapon.walk.size),
+				normal: this.getWalkAnimation(weapon.walk.normal, 'weapon', weapon.walk.size)
 			};
 			if (weapon.walk.behind) {
-				weaponAnimation.walk.behind = this.getWalkAnimation(weapon.walk.behind, weapon.walk.size, true);
+				weaponAnimation.walk.behind = this.getWalkAnimation(weapon.walk.behind, 'weapon', weapon.walk.size, true);
 			}
 		}
 
 		if (weapon.slash) {
 			weaponAnimation.slash = {
-				normal: this.getSlashAnimation(weapon.slash.normal, weapon.slash.size),
+				normal: this.getSlashAnimation(weapon.slash.normal, 'weapon', weapon.slash.size)
 			};
 			if (weapon.slash.behind) {
-				weaponAnimation.slash.behind = this.getSlashAnimation(weapon.slash.behind, weapon.slash.size, true);
+				weaponAnimation.slash.behind = this.getSlashAnimation(weapon.slash.behind, 'weapon', weapon.slash.size, true);
 			}
 		}
 
 		if (weapon.thrust) {
 			weaponAnimation.thrust = {
-				normal: this.getThrustAnimation(weapon.thrust.normal, weapon.thrust.size),
+				normal: this.getThrustAnimation(weapon.thrust.normal, 'weapon', weapon.thrust.size)
 			};
 			if (weapon.thrust.behind) {
-				weaponAnimation.thrust.behind = this.getThrustAnimation(weapon.thrust.behind, weapon.thrust.size, true);
+				weaponAnimation.thrust.behind = this.getThrustAnimation(weapon.thrust.behind, 'weapon', weapon.thrust.size, true);
 			}
 		}
 
@@ -87,65 +85,14 @@ export class PixiAnimationLoader {
 	}
 
 
-	private getWeaponAnimation(): PixiAnimationDirection {
-		const weaponSlashBehindUrl = 'assets/weapon/sword/glowsword/attack_slash/behind/red.png';
-		const weaponSlash = 'assets/weapon/sword/glowsword/attack_slash/red.png';
-		const sheetSlashBehind = BaseTexture.from(weaponSlashBehindUrl);
-		const sheetSlash = BaseTexture.from(weaponSlash);
-		const frameWidth = 192;
-		const frameHeight = 192;
-
-		const slashUp: Array<Texture> = [];
-		const slashLeft: Array<Texture> = [];
-		const slashDown: Array<Texture> = [];
-		const slashRight: Array<Texture> = [];
-
-		for (let x = 0; x < this.SLASH_FRAMES; x++) {
-			slashUp.push(new Texture(sheetSlash, new Rectangle(x * frameWidth, 0 * frameHeight, frameWidth, frameHeight)));
-			slashLeft.push(new Texture(sheetSlash, new Rectangle(x * frameWidth, 1 * frameHeight, frameWidth, frameHeight)));
-			slashDown.push(new Texture(sheetSlash, new Rectangle(x * frameWidth, 2 * frameHeight, frameWidth, frameHeight)));
-			slashRight.push(new Texture(sheetSlash, new Rectangle(x * frameWidth, 3 * frameHeight, frameWidth, frameHeight)));
-		}
-
-		const leftIdle = slashLeft[0];
-		const leftAnimation = slashLeft.slice(1, slashLeft.length);
-
-		const slashDirection = new PixiAnimationDirection(slashLeft, slashRight, slashUp, slashDown);
-		return slashDirection;
-	}
-
-	private getBowAnimation(): PixiAnimationDirection {
-		const bowWalkBackgroundUrl = 'assets/weapon/ranged/bow/recurve/walk/background/recurve.png';
-		const bowWalkForegroundUrl = 'assets/weapon/ranged/bow/recurve/walk/foreground/recurve.png';
-		const sheetForeGround = BaseTexture.from(bowWalkForegroundUrl);
-		const sheetBackGround = BaseTexture.from(bowWalkBackgroundUrl);
-
-		const frameWidth = 128;
-		const frameHeight = 128;
-		const walkUp: Array<Texture> = [];
-		const walkLeft: Array<Texture> = [];
-		const walkDown: Array<Texture> = [];
-		const walkRight: Array<Texture> = [];
-
-		for (let x = 0; x < this.WALK_FRAMES; x++) {
-			walkUp.push(new Texture(sheetBackGround, new Rectangle(x * frameWidth, 0 * frameHeight, frameWidth, frameHeight)));
-			walkLeft.push(new Texture(sheetBackGround, new Rectangle(x * frameWidth, 1 * frameHeight, frameWidth, frameHeight)));
-			walkDown.push(new Texture(sheetForeGround, new Rectangle(x * frameWidth, 0 * frameHeight, frameWidth, frameHeight)));
-			walkRight.push(new Texture(sheetBackGround, new Rectangle(x * frameWidth, 3 * frameHeight, frameWidth, frameHeight)));
-		}
-
-		return new PixiAnimationDirection(walkLeft, walkRight, walkUp, walkDown);
-	}
-
-
-	private getAnimation(url: string, behind?: boolean): PixiAnimation {
-		const walkAnimation = this.getWalkAnimation(url, undefined, behind);
-		const slashAnimation = this.getSlashAnimation(url, undefined, behind);
-		const thrustAnimation = this.getThrustAnimation(url, undefined, behind);
+	private getAnimation(url: string, type: 'weapon' | 'character', behind?: boolean): PixiAnimation {
+		const walkAnimation = this.getWalkAnimation(url, type, undefined, behind);
+		const slashAnimation = this.getSlashAnimation(url, type, undefined, behind);
+		const thrustAnimation = this.getThrustAnimation(url, type, undefined, behind);
 		return new PixiAnimation(walkAnimation, slashAnimation, thrustAnimation);
 	}
 
-	private getWalkAnimation(url: string, size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getWalkAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const walkUp: Array<Texture> = [];
 		const walkLeft: Array<Texture> = [];
@@ -162,10 +109,10 @@ export class PixiAnimationLoader {
 		}
 
 
-		return new PixiAnimationDirection(walkLeft, walkRight, walkUp, walkDown, size, isBehind);
+		return new PixiAnimationDirection(walkLeft, walkRight, walkUp, walkDown, type, size, isBehind);
 	}
 
-	private getSlashAnimation(url: string, size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getSlashAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const slashUp: Array<Texture> = [];
 		const slashLeft: Array<Texture> = [];
@@ -181,10 +128,10 @@ export class PixiAnimationLoader {
 			slashRight.push(new Texture(sheet, new Rectangle(x * frameSize, (startFrame + 3) * frameSize, frameSize, frameSize)));
 		}
 
-		return new PixiAnimationDirection(slashLeft, slashRight, slashUp, slashDown, size, isBehind);
+		return new PixiAnimationDirection(slashLeft, slashRight, slashUp, slashDown, type, size, isBehind);
 	}
 
-	private getThrustAnimation(url: string, size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getThrustAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const thrustUp: Array<Texture> = [];
 		const thrustLeft: Array<Texture> = [];
@@ -200,6 +147,6 @@ export class PixiAnimationLoader {
 			thrustRight.push(new Texture(sheet, new Rectangle(x * frameSize, (startFrame + 3) * frameSize, frameSize, frameSize)));
 		}
 
-		return new PixiAnimationDirection(thrustLeft, thrustRight, thrustUp, thrustDown, size, isBehind);
+		return new PixiAnimationDirection(thrustLeft, thrustRight, thrustUp, thrustDown, type, size, isBehind);
 	}
 }

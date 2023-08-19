@@ -43,22 +43,16 @@ export class ModelWeaponController {
 	walkLeft(): void {
 		this.currentNormalAnimations[0].textures = this.animationModel.universal!.normal.walk.animation.left.textures;
 		this.currentNormalAnimations[1].textures = this.animationModel.universal!.behind!.walk.animation.left.textures;
-
-		this.currentNormalAnimations.forEach((sprite) => {
-			sprite.visible = true;
-			this.play();
-		});
+		this.play();
 	}
 
 
 	walkDown(): void {
 		this.currentNormalAnimations[0].textures = this.animationModel.universal!.normal.walk.animation.down.textures;
+		this.currentNormalAnimations[0].zIndex = 11;
 		this.currentNormalAnimations[1].textures = this.animationModel.universal!.behind!.walk.animation.down.textures;
 
-		this.currentNormalAnimations.forEach((sprite) => {
-			sprite.visible = true;
-			this.play();
-		});
+		this.play();
 	}
 
 

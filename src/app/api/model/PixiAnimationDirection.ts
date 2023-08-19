@@ -4,8 +4,11 @@ export class PixiAnimationDirection {
 
 	private readonly ANIMATION_SPEED = 0.2;
 	private readonly ANIMATION_SCALE = 2.0;
-	private readonly ANIMATION_Z_INDEX = 10;
-	private readonly ANIMATION_BEHIND_Z_INDEX = 1;
+
+	private readonly CHARACTER_Z_INDEX = 10;
+	private readonly WEAPON_Z_INDEX = 20;
+	private readonly WEAPON_Z_INDEX_BEHIND = 1;
+
 	private readonly ANIMATION_IDLE_FRAME = 0;
 
 	constructor(
@@ -13,6 +16,7 @@ export class PixiAnimationDirection {
 		private readonly right: Array<Texture>,
 		private readonly up: Array<Texture>,
 		private readonly down: Array<Texture>,
+		private readonly type: 'weapon' | 'character',
 		private readonly size?: number,
 		private readonly isBehind?: boolean
 	) {
@@ -71,8 +75,11 @@ export class PixiAnimationDirection {
 		animatedSprite.scale.x = this.ANIMATION_SCALE;
 		animatedSprite.scale.y = this.ANIMATION_SCALE;
 		// behind means that the character need to be behind, so if something is behind it's actually in front
-		animatedSprite.zIndex = this.isBehind ? this.ANIMATION_Z_INDEX : this.ANIMATION_BEHIND_Z_INDEX;
-		animatedSprite.visible = !this.size;
+		animatedSprite.zIndex = this.CHARACTER_Z_INDEX;
+		if (this.type === 'weapon') {
+			animatedSprite.zIndex = this.isBehind ? this.WEAPON_Z_INDEX_BEHIND : this.WEAPON_Z_INDEX;
+		}
+
 		if (animatedSprite instanceof AnimatedSprite) {
 			animatedSprite.animationSpeed = this.ANIMATION_SPEED;
 		}
