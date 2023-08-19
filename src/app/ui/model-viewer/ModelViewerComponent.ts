@@ -15,14 +15,15 @@ import { PixiAnimationLoader } from '../../api/model/PixiAnimationLoader';
 })
 export class ModelViewerComponent implements OnInit {
 
-	@Output()
-	readonly initialized = new EventEmitter<ModelController>();
-
 	@Input()
 	height: number = 256;
 
 	@Input()
 	width: number = 256;
+
+	@Output()
+	readonly initialized = new EventEmitter<ModelController>();
+
 
 	private game!: Application;
 

@@ -5,6 +5,7 @@ export class PixiAnimation {
 	constructor(
 		private readonly walk: PixiAnimationDirection,
 		private readonly slash: PixiAnimationDirection,
+		private readonly thrust: PixiAnimationDirection
 	) {
 
 	}
@@ -15,5 +16,9 @@ export class PixiAnimation {
 
 	getSlash(): PixiAnimationDirection {
 		return this.slash;
+	}
+
+	getThrust(): PixiAnimationDirection {
+		return this.thrust;
 	}
 }
