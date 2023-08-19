@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Application, BaseTexture, Rectangle, Texture } from 'pixi.js';
 import { CharacterModel } from './CharacterModel';
 import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
-import { katana, longSword } from './LPCWeapon';
+import { katana } from './LPCWeapon';
 import { PixiAnimation } from './PixiAnimation';
-import { PixiAnimationDirection } from './PixiAnimationDirection';
+import { PixiAnimationDirection, PixiAnimationDirectionType } from './PixiAnimationDirection';
 
 @Injectable()
 export class PixiAnimationLoader {
@@ -35,8 +35,8 @@ export class PixiAnimationLoader {
 		const headUrl: string = 'assets/head/heads/human_male/universal.png';
 
 
-		const bodyAnimation = this.getAnimation(bodyUrl, 'character');
-		const headAnimation = this.getAnimation(headUrl, 'character');
+		const bodyAnimation = this.getAnimation(bodyUrl, PixiAnimationDirectionType.character);
+		const headAnimation = this.getAnimation(headUrl, PixiAnimationDirectionType.character);
 		const characterBasicAnimation = { body: bodyAnimation, head: headAnimation };
 		return new CharacterModel(game, characterBasicAnimation, this.getWeaponAnimation());
 
@@ -47,37 +47,37 @@ export class PixiAnimationLoader {
 		const weaponAnimation: CharacterWeaponAnimation = {};
 		if (weapon.universal) {
 			weaponAnimation.universal = {
-				normal: this.getAnimation(weapon.universal.normal, 'weapon')
+				normal: this.getAnimation(weapon.universal.normal, PixiAnimationDirectionType.weapon)
 			};
 			if (weapon.universal.behind) {
-				weaponAnimation.universal.behind = this.getAnimation(weapon.universal.behind, 'weapon', true);
+				weaponAnimation.universal.behind = this.getAnimation(weapon.universal.behind, PixiAnimationDirectionType.weapon, true);
 			}
 		}
 
 		if (weapon.walk) {
 			weaponAnimation.walk = {
-				normal: this.getWalkAnimation(weapon.walk.normal, 'weapon', weapon.walk.size)
+				normal: this.getWalkAnimation(weapon.walk.normal, PixiAnimationDirectionType.weapon, weapon.walk.size)
 			};
 			if (weapon.walk.behind) {
-				weaponAnimation.walk.behind = this.getWalkAnimation(weapon.walk.behind, 'weapon', weapon.walk.size, true);
+				weaponAnimation.walk.behind = this.getWalkAnimation(weapon.walk.behind, PixiAnimationDirectionType.weapon, weapon.walk.size, true);
 			}
 		}
 
 		if (weapon.slash) {
 			weaponAnimation.slash = {
-				normal: this.getSlashAnimation(weapon.slash.normal, 'weapon', weapon.slash.size)
+				normal: this.getSlashAnimation(weapon.slash.normal, PixiAnimationDirectionType.weapon, weapon.slash.size)
 			};
 			if (weapon.slash.behind) {
-				weaponAnimation.slash.behind = this.getSlashAnimation(weapon.slash.behind, 'weapon', weapon.slash.size, true);
+				weaponAnimation.slash.behind = this.getSlashAnimation(weapon.slash.behind, PixiAnimationDirectionType.weapon, weapon.slash.size, true);
 			}
 		}
 
 		if (weapon.thrust) {
 			weaponAnimation.thrust = {
-				normal: this.getThrustAnimation(weapon.thrust.normal, 'weapon', weapon.thrust.size)
+				normal: this.getThrustAnimation(weapon.thrust.normal, PixiAnimationDirectionType.weapon, weapon.thrust.size)
 			};
 			if (weapon.thrust.behind) {
-				weaponAnimation.thrust.behind = this.getThrustAnimation(weapon.thrust.behind, 'weapon', weapon.thrust.size, true);
+				weaponAnimation.thrust.behind = this.getThrustAnimation(weapon.thrust.behind, PixiAnimationDirectionType.weapon, weapon.thrust.size, true);
 			}
 		}
 
@@ -85,14 +85,14 @@ export class PixiAnimationLoader {
 	}
 
 
-	private getAnimation(url: string, type: 'weapon' | 'character', behind?: boolean): PixiAnimation {
+	private getAnimation(url: string, type: PixiAnimationDirectionType, behind?: boolean): PixiAnimation {
 		const walkAnimation = this.getWalkAnimation(url, type, undefined, behind);
 		const slashAnimation = this.getSlashAnimation(url, type, undefined, behind);
 		const thrustAnimation = this.getThrustAnimation(url, type, undefined, behind);
 		return new PixiAnimation(walkAnimation, slashAnimation, thrustAnimation);
 	}
 
-	private getWalkAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getWalkAnimation(url: string, type: PixiAnimationDirectionType, size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const walkUp: Array<Texture> = [];
 		const walkLeft: Array<Texture> = [];
@@ -112,7 +112,7 @@ export class PixiAnimationLoader {
 		return new PixiAnimationDirection(walkLeft, walkRight, walkUp, walkDown, type, size, isBehind);
 	}
 
-	private getSlashAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getSlashAnimation(url: string, type: PixiAnimationDirectionType, size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const slashUp: Array<Texture> = [];
 		const slashLeft: Array<Texture> = [];
@@ -131,7 +131,7 @@ export class PixiAnimationLoader {
 		return new PixiAnimationDirection(slashLeft, slashRight, slashUp, slashDown, type, size, isBehind);
 	}
 
-	private getThrustAnimation(url: string, type: 'weapon' | 'character', size?: number, isBehind?: boolean): PixiAnimationDirection {
+	private getThrustAnimation(url: string, type: PixiAnimationDirectionType, size?: number, isBehind?: boolean): PixiAnimationDirection {
 		const sheet = BaseTexture.from(url);
 		const thrustUp: Array<Texture> = [];
 		const thrustLeft: Array<Texture> = [];

@@ -1,5 +1,11 @@
 import { AnimatedSprite, Sprite, Texture } from 'pixi.js';
 
+
+export enum PixiAnimationDirectionType {
+	weapon = 'weapon',
+	character = 'character'
+}
+
 export class PixiAnimationDirection {
 
 	private readonly ANIMATION_SPEED = 0.2;
@@ -17,7 +23,7 @@ export class PixiAnimationDirection {
 		private readonly right: Array<Texture>,
 		private readonly up: Array<Texture>,
 		private readonly down: Array<Texture>,
-		private readonly type: 'weapon' | 'character',
+		private readonly type: PixiAnimationDirectionType,
 		private readonly size?: number,
 		private readonly isBehind?: boolean
 	) {
@@ -76,7 +82,7 @@ export class PixiAnimationDirection {
 		animatedSprite.scale.x = this.ANIMATION_SCALE;
 		animatedSprite.scale.y = this.ANIMATION_SCALE;
 		animatedSprite.zIndex = this.CHARACTER_Z_INDEX;
-		if (this.type === 'weapon') {
+		if (this.type === PixiAnimationDirectionType.weapon) {
 			animatedSprite.zIndex = this.isBehind ? this.WEAPON_Z_INDEX_BEHIND : this.WEAPON_Z_INDEX;
 
 			if (this.size) {
