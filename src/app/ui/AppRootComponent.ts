@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { faAppleWhole } from '@fortawesome/free-solid-svg-icons';
-import { CharacterModel } from '../api/model/CharacterModel';
+import { CharacterModelController } from '../api/animation/controllers/CharacterModelController';
 
 @Component({
 	selector: 'app-root',
@@ -13,9 +13,9 @@ export class AppRootComponent {
 	faCoffee = faAppleWhole;
 
 
-	private modelController!: CharacterModel;
+	private modelController!: CharacterModelController;
 
-	modelInitialized(controller: CharacterModel): void {
+	modelInitialized(controller: CharacterModelController): void {
 		this.modelController = controller;
 	}
 

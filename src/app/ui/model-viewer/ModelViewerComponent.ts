@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Application } from 'pixi.js';
-import { CharacterModel } from '../../api/model/CharacterModel';
-import { PixiAnimationLoader } from '../../api/model/PixiAnimationLoader';
+import { AnimationLoader } from '../../api/animation/AnimationLoader';
+import { CharacterModelController } from '../../api/animation/controllers/CharacterModelController';
+import { SpriteCreator } from '../../api/animation/SpriteCreator';
 
 @Component({
 	selector: 'model-viewer',
@@ -9,7 +10,7 @@ import { PixiAnimationLoader } from '../../api/model/PixiAnimationLoader';
 	styleUrls: ['./ModelViewerComponent.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
-		PixiAnimationLoader
+		SpriteCreator, AnimationLoader
 	],
 	standalone: true
 })
@@ -22,16 +23,16 @@ export class ModelViewerComponent implements OnInit {
 	width: number = 256;
 
 	@Output()
-	readonly initialized = new EventEmitter<CharacterModel>();
+	readonly initialized = new EventEmitter<CharacterModelController>();
 
 
 	private game!: Application;
 
 
-	private modelAnimationController!: CharacterModel;
+	private modelAnimationController!: CharacterModelController;
 
 	constructor(
-		private readonly pixiAnimationLoader: PixiAnimationLoader,
+		private readonly animationLoader: AnimationLoader,
 		private readonly viewContainerRef: ViewContainerRef
 	) {
 	}
@@ -39,7 +40,7 @@ export class ModelViewerComponent implements OnInit {
 	ngOnInit(): void {
 		this.game = new Application({ backgroundAlpha: 0 });
 		this.game.stage.sortableChildren = true;
-		this.modelAnimationController = this.pixiAnimationLoader.getCharacterAnimation(this.game);
+		this.modelAnimationController = this.animationLoader.loadAnimation(this.game);
 		this.attachGameCanvas();
 		this.initialized.emit(this.modelAnimationController);
 	}

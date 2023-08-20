@@ -1,21 +1,24 @@
 import { AnimatedSprite, Application, Sprite, Texture } from 'pixi.js';
-import { Animation } from './animation/Animation';
-import { AnimationDirection } from './animation/AnimationDirection';
-import { AnimationModelHelper } from './AnimationModelHelper';
-import { CharacterBasicAnimation } from './CharacterBasicAnimation';
+import { Animation } from '../model/Animation';
+import { AnimationDirection } from '../model/AnimationDirection';
+import { BodyAnimationModel } from '../model/BodyAnimationModel';
+import { SpriteCreator } from '../SpriteCreator';
 
 
-export class ModelBodyController {
+export class BodyModelController {
 
-	private readonly helper = new AnimationModelHelper();
-	private readonly animationModel = this.helper.getBasicModelAnimation(this.basic);
+	private readonly spriteCreator = new SpriteCreator();
 
-	private readonly currentAnimatedSprites: Array<AnimatedSprite> = this.helper.getBasicModelAnimation(this.basic).walk.animation.down;
-	private readonly currentIdleSprite: Array<Sprite> = this.helper.getBasicModelAnimation(this.basic).walk.idle.down;
+	private readonly currentAnimatedSprites: Array<AnimatedSprite> = this.bodyAnimationModel.walk.animation.down.map(sprite => {
+		return this.spriteCreator.copySprite(sprite) as AnimatedSprite;
+	});
+	private readonly currentIdleSprite: Array<Sprite> = this.bodyAnimationModel.walk.idle.down.map(sprite => {
+		return this.spriteCreator.copySprite(sprite) as Sprite;
+	});
 
 	constructor(
 		private readonly application: Application,
-		private readonly basic: CharacterBasicAnimation
+		private readonly bodyAnimationModel: BodyAnimationModel
 	) {
 		this.initialize();
 	}
@@ -60,8 +63,8 @@ export class ModelBodyController {
 		for (let i = 0; i < this.currentAnimatedSprites.length; i++) {
 			let texture: Texture;
 			let textures: Array<Texture>;
-			texture = this.animationModel[animation].idle[direction][i].texture;
-			textures = this.animationModel[animation].animation[direction][i].textures as Array<Texture>;
+			texture = this.bodyAnimationModel[animation].idle[direction][i].texture;
+			textures = this.bodyAnimationModel[animation].animation[direction][i].textures as Array<Texture>;
 			this.currentAnimatedSprites[i].textures = textures;
 			this.currentIdleSprite[i].texture = texture;
 		}

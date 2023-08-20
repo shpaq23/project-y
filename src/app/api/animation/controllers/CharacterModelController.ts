@@ -1,20 +1,20 @@
 import { Application } from 'pixi.js';
-import { CharacterBasicAnimation } from './CharacterBasicAnimation';
-import { CharacterWeaponAnimation } from './CharacterWeaponAnimation';
-import { ModelBodyController } from './ModelBodyController';
-import { ModelWeaponController } from './ModelWeaponController';
+import { BodyAnimationModel } from '../model/BodyAnimationModel';
+import { WeaponAnimationModel } from '../model/WeaponAnimationModel';
+import { BodyModelController } from './BodyModelController';
+import { WeaponModelController } from './WeaponModelController';
 
-export class CharacterModel {
+export class CharacterModelController {
 
-	private readonly bodyController: ModelBodyController = new ModelBodyController(this.application, this.basic);
-	private readonly weaponController: ModelWeaponController | undefined = this.weapon
-		? new ModelWeaponController(this.application, this.weapon)
+	private readonly bodyController: BodyModelController = new BodyModelController(this.application, this.body);
+	private readonly weaponController: WeaponModelController | undefined = this.weapon
+		? new WeaponModelController(this.application, this.weapon)
 		: undefined;
 
 	constructor(
 		private readonly application: Application,
-		private readonly basic: CharacterBasicAnimation,
-		private readonly weapon?: CharacterWeaponAnimation
+		private readonly body: BodyAnimationModel,
+		private readonly weapon?: WeaponAnimationModel
 	) {
 	}
 
