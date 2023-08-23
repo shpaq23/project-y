@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AnimatedSprite, Application, BaseTexture, Rectangle, Sprite, Texture } from 'pixi.js';
-import { longSword } from '../model/LPC/LPCWeapon';
+import { CharacterLook } from '../model/character/look/CharacterLook';
+import { longSword } from '../model/LPC/enums/LPCWeapon';
 import { Animation } from './model/Animation';
 import { AnimationDirection } from './model/AnimationDirection';
 import { BodyAnimationModel, BodyAnimationModelDirection } from './model/BodyAnimationModel';
@@ -16,10 +17,11 @@ type AnimationTexturePack = { [key in keyof typeof Animation]: DirectionTextureP
 
 enum BodyPart {
 	body = 'body',
-	head = 'head'
+	head = 'head',
+	ears = 'ears'
 }
 
-type BodyTextures = { [key in keyof typeof BodyPart]: AnimationTexturePack };
+type BodyTextures = { [key in keyof typeof BodyPart]?: AnimationTexturePack };
 
 @Injectable()
 export class AnimationLoader {
@@ -49,8 +51,8 @@ export class AnimationLoader {
 	}
 
 
-	loadAnimation(game: Application): CharacterModelController {
-		const body: BodyAnimationModel = this.getBodyAnimationModel();
+	loadAnimation(game: Application, look: CharacterLook): CharacterModelController {
+		const body: BodyAnimationModel = this.getBodyAnimationModel(look);
 		const weapon: WeaponAnimationModel = this.getWeaponAnimationModel();
 		return new CharacterModelController(game, body, weapon);
 	}
@@ -129,23 +131,29 @@ export class AnimationLoader {
 		};
 	}
 
-	private getBodyAnimationModel(): BodyAnimationModel {
-		const bodyUrl = 'assets/body/bodies/male/universal.png';
-		const headUrl = 'assets/head/heads/human_male/universal.png';
+	private getBodyAnimationModel(look: CharacterLook): BodyAnimationModel {
+		const bodyLook = look.getBody();
 		const bodyTextures: BodyTextures = {
-			body: this.getAnimationTexturePack(bodyUrl),
-			head: this.getAnimationTexturePack(headUrl)
+			body: this.getAnimationTexturePack(bodyLook.getCharacterBody()),
+			head: this.getAnimationTexturePack(bodyLook.getHead()),
 		};
+		if (bodyLook.getEars()) {
+			(bodyTextures.ears as { [key in keyof typeof Animation]: DirectionTexturePack }) = this.getAnimationTexturePack(bodyLook.getEars()!);
+		}
 
 
 		const bodyAnimationModel: BodyAnimationModel = Object.values(Animation).reduce((acc, animation) => {
 			(acc[animation] as BodyAnimationModelDirection) = {
 				animation: Object.values(AnimationDirection).reduce((acc, direction) => {
-					(acc[direction] as Array<AnimatedSprite>) = Object.values(BodyPart).map(part => this.spriteCreator.createAnimatedSprite(bodyTextures[part][animation].animation[direction], 'normal'));
+					(acc[direction] as Array<AnimatedSprite>) = Object.values(BodyPart)
+					                                                  .filter(part => bodyTextures[part])
+					                                                  .map(part => this.spriteCreator.createAnimatedSprite(bodyTextures[part]![animation].animation[direction], 'normal'));
 					return acc;
 				}, {} as { [key in keyof typeof AnimationDirection]: Array<AnimatedSprite> }),
 				idle: Object.values(AnimationDirection).reduce((acc, direction) => {
-					(acc[direction] as Array<Sprite>) = Object.values(BodyPart).map(part => this.spriteCreator.createSprite(bodyTextures[part][animation].idle[direction], 'normal'));
+					(acc[direction] as Array<Sprite>) = Object.values(BodyPart)
+					                                          .filter(part => bodyTextures[part])
+					                                          .map(part => this.spriteCreator.createSprite(bodyTextures[part]![animation].idle[direction], 'normal'));
 					return acc;
 				}, {} as { [key in keyof typeof AnimationDirection]: Array<Sprite> })
 			};

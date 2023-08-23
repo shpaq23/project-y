@@ -3,6 +3,7 @@ import { Application } from 'pixi.js';
 import { AnimationLoader } from '../../api/animation/AnimationLoader';
 import { CharacterModelController } from '../../api/animation/controllers/CharacterModelController';
 import { SpriteCreator } from '../../api/animation/SpriteCreator';
+import { CharacterLook } from '../../api/model/character/look/CharacterLook';
 
 @Component({
 	selector: 'model-viewer',
@@ -15,6 +16,9 @@ import { SpriteCreator } from '../../api/animation/SpriteCreator';
 	standalone: true
 })
 export class ModelViewerComponent implements OnInit {
+
+	@Input({ required: true })
+	characterLook!: CharacterLook;
 
 	@Input()
 	height: number = 256;
@@ -40,7 +44,7 @@ export class ModelViewerComponent implements OnInit {
 	ngOnInit(): void {
 		this.game = new Application({ backgroundAlpha: 0 });
 		this.game.stage.sortableChildren = true;
-		this.modelAnimationController = this.animationLoader.loadAnimation(this.game);
+		this.modelAnimationController = this.animationLoader.loadAnimation(this.game, this.characterLook);
 		this.attachGameCanvas();
 		this.initialized.emit(this.modelAnimationController);
 	}

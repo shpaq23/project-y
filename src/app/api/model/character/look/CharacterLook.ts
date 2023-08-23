@@ -8,4 +8,12 @@ export class CharacterLook {
 		private readonly equipment: CharacterEquipmentLook
 	) {
 	}
+
+	getBody(): CharacterBodyLook {
+		return this.body;
+	}
+
+	getEquipment(): CharacterEquipmentLook {
+		return this.equipment;
+	}
 }
