@@ -58,4 +58,60 @@ export class CharacterModelController {
 		this.weaponController?.slashDown();
 	}
 
+	thrustLeft(): void {
+		this.bodyController.thrustLeft();
+		this.weaponController?.thrustLeft();
+	}
+
+	thrustRight(): void {
+		this.bodyController.thrustRight();
+		this.weaponController?.thrustRight();
+	}
+
+	thrustUp(): void {
+		this.bodyController.thrustUp();
+		this.weaponController?.thrustUp();
+	}
+
+	thrustDown(): void {
+		this.bodyController.thrustDown();
+		this.weaponController?.thrustDown();
+	}
+
+	castLeft(): void {
+		this.bodyController.castLeft();
+	}
+
+	castRight(): void {
+		this.bodyController.castRight();
+	}
+
+	castUp(): void {
+		this.bodyController.castUp();
+	}
+
+	castDown(): void {
+		this.bodyController.castDown();
+	}
+
+	shootLeft(): void {
+		this.bodyController.shootLeft();
+	}
+
+	shootRight(): void {
+		this.bodyController.shootRight();
+	}
+
+	shootUp(): void {
+		this.bodyController.shootUp();
+	}
+
+	shootDown(): void {
+		this.bodyController.shootDown();
+	}
+
+	death(): void {
+		this.bodyController.death();
+	}
+
 }

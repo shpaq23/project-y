@@ -55,6 +55,58 @@ export class BodyModelController {
 		this.resolveAnimation(Animation.slash, AnimationDirection.down);
 	}
 
+	thrustLeft(): void {
+		this.resolveAnimation(Animation.thrust, AnimationDirection.left);
+	}
+
+	thrustRight(): void {
+		this.resolveAnimation(Animation.thrust, AnimationDirection.right);
+	}
+
+	thrustUp(): void {
+		this.resolveAnimation(Animation.thrust, AnimationDirection.up);
+	}
+
+	thrustDown(): void {
+		this.resolveAnimation(Animation.thrust, AnimationDirection.down);
+	}
+
+	castLeft(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.left);
+	}
+
+	castRight(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.right);
+	}
+
+	castUp(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.up);
+	}
+
+	castDown(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.down);
+	}
+
+	shootLeft(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.left);
+	}
+
+	shootRight(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.right);
+	}
+
+	shootUp(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.up);
+	}
+
+	shootDown(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.down);
+	}
+
+	death(): void {
+		this.resolveAnimation(Animation.death, AnimationDirection.down);
+	}
+
 	private resolveAnimation(animation: Animation, direction: AnimationDirection): void {
 		if (this.currentAnimatedSprites[0].playing) {
 			return;

@@ -66,6 +66,22 @@ export class WeaponModelController {
 		this.resolveAnimation('slash', AnimationDirection.down);
 	}
 
+	thrustLeft(): void {
+		this.resolveAnimation('thrust', AnimationDirection.left);
+	}
+
+	thrustRight(): void {
+		this.resolveAnimation('thrust', AnimationDirection.right);
+	}
+
+	thrustUp(): void {
+		this.resolveAnimation('thrust', AnimationDirection.up);
+	}
+
+	thrustDown(): void {
+		this.resolveAnimation('thrust', AnimationDirection.down);
+	}
+
 	private resolveAnimation(animation: 'walk' | 'slash' | 'thrust', direction: AnimationDirection, initial = false): void {
 		if (this.currentNormalAnimations[0].playing || this.currentBigAnimation[1].playing) {
 			return;
