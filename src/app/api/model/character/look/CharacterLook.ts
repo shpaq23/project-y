@@ -23,7 +23,11 @@ export class CharacterLook {
 	getEars(): string | undefined {
 		return this.body.getEars();
 	}
-
+	
+	getEyes(): string | undefined {
+		return this.body.getEyes(this.gender);
+	}
+	
 	getWeapon(): LPCWeaponStrings {
 		return this.equipment.getWeapon(this.gender);
 	}
@@ -35,4 +39,5 @@ export class CharacterLook {
 	getArrow(): string | undefined {
 		return this.equipment.getArrow();
 	}
+
 }

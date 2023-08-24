@@ -1,5 +1,4 @@
-import { LPCBodyColor } from '../enums/body/LPCBodyColor';
-import { LPCGender } from '../enums/body/LPCGender';
+import { LPCBodyColor, LPCGender } from '../enums';
 
 export type LPCHeadDictionary = {
 	[gender in LPCGender]: {

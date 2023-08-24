@@ -2,6 +2,7 @@ import { lpcWeaponDictionary } from './equipment/LPCWeaponDictionary';
 import { getLpcBodyDictionary } from './LPCBodyDictionary';
 import { getLpcEarsDictionary } from './LPCEarsDictionary';
 import { getLpcHeadDictionary } from './LPCHeadDictionary';
+import { getLpcEyesDictionary } from './LPCEyesDictionary';
 
 export class LPCDictionary {
 
@@ -11,5 +12,5 @@ export class LPCDictionary {
 	public static readonly weapon = lpcWeaponDictionary;
 	public static readonly quiver = 'assets/quiver/quiver.png';
 	public static readonly arrow = 'assets/weapon/ranged/bow/arrow/arrow.png';
-
+	public static readonly eyes = getLpcEyesDictionary();
 }
