@@ -1,4 +1,4 @@
-export interface LPCWeapon {
+export interface LPCWeaponStrings {
 	universal?: {
 		normal: string;
 		behind?: string;
@@ -23,7 +23,7 @@ export interface LPCWeapon {
 	}
 }
 
-export const longSword: LPCWeapon = {
+export const longSword: LPCWeaponStrings = {
 	universal: {
 		normal: 'assets/weapon/sword/longsword/longsword.png',
 		behind: 'assets/weapon/sword/longsword/universal_behind/longsword.png'
@@ -42,7 +42,7 @@ export const longSword: LPCWeapon = {
 	}
 }
 
-export const katana: LPCWeapon = {
+export const katana: LPCWeaponStrings = {
 	walk: {
 		size: 128,
 		normal: 'assets/weapon/sword/katana/walk/katana.png',

@@ -34,55 +34,91 @@ export class WeaponModelController {
 	}
 
 	walkLeft(): void {
-		this.resolveAnimation('walk', AnimationDirection.left);
+		this.resolveAnimation(Animation.walk, AnimationDirection.left);
 	}
 
 
 	walkDown(): void {
-		this.resolveAnimation('walk', AnimationDirection.down);
+		this.resolveAnimation(Animation.walk, AnimationDirection.down);
 	}
 
 	walkRight(): void {
-		this.resolveAnimation('walk', AnimationDirection.right);
+		this.resolveAnimation(Animation.walk, AnimationDirection.right);
 	}
 
 	walkUp(): void {
-		this.resolveAnimation('walk', AnimationDirection.up);
+		this.resolveAnimation(Animation.walk, AnimationDirection.up);
 	}
 
 	slashLeft(): void {
-		this.resolveAnimation('slash', AnimationDirection.left);
+		this.resolveAnimation(Animation.slash, AnimationDirection.left);
 	}
 
 	slashRight(): void {
-		this.resolveAnimation('slash', AnimationDirection.right);
+		this.resolveAnimation(Animation.slash, AnimationDirection.right);
 	}
 
 	slashUp(): void {
-		this.resolveAnimation('slash', AnimationDirection.up);
+		this.resolveAnimation(Animation.slash, AnimationDirection.up);
 	}
 
 	slashDown(): void {
-		this.resolveAnimation('slash', AnimationDirection.down);
+		this.resolveAnimation(Animation.slash, AnimationDirection.down);
 	}
 
 	thrustLeft(): void {
-		this.resolveAnimation('thrust', AnimationDirection.left);
+		this.resolveAnimation(Animation.thrust, AnimationDirection.left);
 	}
 
 	thrustRight(): void {
-		this.resolveAnimation('thrust', AnimationDirection.right);
+		this.resolveAnimation(Animation.thrust, AnimationDirection.right);
 	}
 
 	thrustUp(): void {
-		this.resolveAnimation('thrust', AnimationDirection.up);
+		this.resolveAnimation(Animation.thrust, AnimationDirection.up);
 	}
 
 	thrustDown(): void {
-		this.resolveAnimation('thrust', AnimationDirection.down);
+		this.resolveAnimation(Animation.thrust, AnimationDirection.down);
 	}
 
-	private resolveAnimation(animation: 'walk' | 'slash' | 'thrust', direction: AnimationDirection, initial = false): void {
+	shootLeft(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.left);
+	}
+
+	shootRight(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.right);
+	}
+
+	shootUp(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.up);
+	}
+
+	shootDown(): void {
+		this.resolveAnimation(Animation.shoot, AnimationDirection.down);
+	}
+
+	castLeft(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.left);
+	}
+
+	castRight(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.right);
+	}
+
+	castUp(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.up);
+	}
+
+	castDown(): void {
+		this.resolveAnimation(Animation.cast, AnimationDirection.down);
+	}
+
+	death(): void {
+		this.resolveAnimation(Animation.death, AnimationDirection.down);
+	}
+
+	private resolveAnimation(animation: Animation, direction: AnimationDirection, initial = false): void {
 		if (this.currentNormalAnimations[0].playing || this.currentBigAnimation[1].playing) {
 			return;
 		}
@@ -110,19 +146,20 @@ export class WeaponModelController {
 			}
 		}
 
-		if (this.weaponAnimationModel[animation]) {
-			this.currentBigAnimation[0].textures = this.weaponAnimationModel[animation]!.normal.animation[direction].textures;
-			this.copySpriteProperties(this.currentBigAnimation[0], this.weaponAnimationModel[animation]!.normal.animation[direction]);
+		const weaponBigAnimationModel = this.weaponAnimationModel[animation];
+		if (weaponBigAnimationModel) {
+			this.currentBigAnimation[0].textures = weaponBigAnimationModel.normal.animation[direction].textures;
+			this.copySpriteProperties(this.currentBigAnimation[0], weaponBigAnimationModel.normal.animation[direction]);
 
-			this.currentBigIdle[0].texture = this.weaponAnimationModel[animation]!.normal.idle[direction].texture;
-			this.copySpriteProperties(this.currentBigIdle[0], this.weaponAnimationModel[animation]!.normal.idle[direction]);
+			this.currentBigIdle[0].texture = weaponBigAnimationModel.normal.idle[direction].texture;
+			this.copySpriteProperties(this.currentBigIdle[0], weaponBigAnimationModel.normal.idle[direction]);
 
-			if (this.weaponAnimationModel[animation]!.behind) {
-				this.currentBigAnimation[1].textures = this.weaponAnimationModel[animation]!.behind!.animation[direction].textures;
-				this.copySpriteProperties(this.currentBigAnimation[1], this.weaponAnimationModel[animation]!.behind!.animation[direction]);
+			if (weaponBigAnimationModel.behind) {
+				this.currentBigAnimation[1].textures = weaponBigAnimationModel.behind.animation[direction].textures;
+				this.copySpriteProperties(this.currentBigAnimation[1], weaponBigAnimationModel.behind.animation[direction]);
 
-				this.currentBigIdle[1].texture = this.weaponAnimationModel[animation]!.behind!.idle[direction].texture;
-				this.copySpriteProperties(this.currentBigIdle[1], this.weaponAnimationModel[animation]!.behind!.idle[direction]);
+				this.currentBigIdle[1].texture = weaponBigAnimationModel.behind.idle[direction].texture;
+				this.copySpriteProperties(this.currentBigIdle[1], weaponBigAnimationModel.behind.idle[direction]);
 			}
 			if (!initial) {
 				this.playBig();

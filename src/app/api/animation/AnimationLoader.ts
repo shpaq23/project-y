@@ -1,27 +1,30 @@
 import { Injectable } from '@angular/core';
 import { AnimatedSprite, Application, BaseTexture, Rectangle, Sprite, Texture } from 'pixi.js';
 import { CharacterLook } from '../model/character/look/CharacterLook';
-import { longSword } from '../model/LPC/enums/LPCWeapon';
+import { CharacterModelController } from './controllers/CharacterModelController';
 import { Animation } from './model/Animation';
 import { AnimationDirection } from './model/AnimationDirection';
 import { BodyAnimationModel, BodyAnimationModelDirection } from './model/BodyAnimationModel';
-import { CharacterModelController } from './controllers/CharacterModelController';
-import { Layer, SpriteCreator } from './SpriteCreator';
 import { WeaponAnimationBodyModel, WeaponAnimationDirectionModel, WeaponAnimationModel } from './model/WeaponAnimationModel';
+import { Layer, SpriteCreator } from './SpriteCreator';
 
 type DirectionTexturePack = {
-	animation: { [key in keyof typeof AnimationDirection]: Array<Texture> },
-	idle: { [key in keyof typeof AnimationDirection]: Texture }
+	animation: { [key in AnimationDirection]: Array<Texture> },
+	idle: { [key in AnimationDirection]: Texture }
 };
-type AnimationTexturePack = { [key in keyof typeof Animation]: DirectionTexturePack };
+type AnimationTexturePack = { [key in Animation]: DirectionTexturePack };
+
+// order of enum meter. It's used to determine the order of the sprites layers
 
 enum BodyPart {
+	quiver = 'quiver',
 	body = 'body',
 	head = 'head',
-	ears = 'ears'
+	ears = 'ears',
+	arrows = 'arrow',
 }
 
-type BodyTextures = { [key in keyof typeof BodyPart]?: AnimationTexturePack };
+type BodyTextures = { [key in BodyPart]?: AnimationTexturePack };
 
 @Injectable()
 export class AnimationLoader {
@@ -53,13 +56,13 @@ export class AnimationLoader {
 
 	loadAnimation(game: Application, look: CharacterLook): CharacterModelController {
 		const body: BodyAnimationModel = this.getBodyAnimationModel(look);
-		const weapon: WeaponAnimationModel = this.getWeaponAnimationModel();
+		const weapon: WeaponAnimationModel = this.getWeaponAnimationModel(look);
 		return new CharacterModelController(game, body, weapon);
 	}
 
 
-	private getWeaponAnimationModel(): WeaponAnimationModel {
-		const weapon = longSword;
+	private getWeaponAnimationModel(look: CharacterLook): WeaponAnimationModel {
+		const weapon = look.getWeapon();
 		const weaponAnimationModel: WeaponAnimationModel = {};
 
 		if (weapon.universal) {
@@ -113,7 +116,7 @@ export class AnimationLoader {
 
 	private getWeaponAnimationBodyModel(textures: AnimationTexturePack, layer: Layer): WeaponAnimationBodyModel {
 		return Object.values(Animation).reduce((acc, animation) => {
-			(acc[animation] as WeaponAnimationDirectionModel) = this.getWeaponAnimationDirectionModel(textures[animation], layer);
+			acc[animation] = this.getWeaponAnimationDirectionModel(textures[animation], layer);
 			return acc;
 		}, {} as WeaponAnimationBodyModel);
 	}
@@ -121,44 +124,52 @@ export class AnimationLoader {
 	private getWeaponAnimationDirectionModel(textures: DirectionTexturePack, layer: Layer, oversize?: number): WeaponAnimationDirectionModel {
 		return {
 			animation: Object.values(AnimationDirection).reduce((acc, direction) => {
-				(acc[direction] as AnimatedSprite) = this.spriteCreator.createAnimatedSprite(textures.animation[direction], layer, oversize);
+				acc[direction] = this.spriteCreator.createAnimatedSprite(textures.animation[direction], layer, oversize);
 				return acc;
-			}, {} as { [key in keyof typeof AnimationDirection]: AnimatedSprite }),
+			}, {} as { [key in AnimationDirection]: AnimatedSprite }),
 			idle: Object.values(AnimationDirection).reduce((acc, direction) => {
-				(acc[direction] as Sprite) = this.spriteCreator.createSprite(textures.idle[direction], layer, oversize);
+				acc[direction] = this.spriteCreator.createSprite(textures.idle[direction], layer, oversize);
 				return acc;
-			}, {} as { [key in keyof typeof AnimationDirection]: Sprite })
+			}, {} as { [key in AnimationDirection]: Sprite })
 		};
 	}
 
 	private getBodyAnimationModel(look: CharacterLook): BodyAnimationModel {
-		const bodyLook = look.getBody();
 		const bodyTextures: BodyTextures = {
-			body: this.getAnimationTexturePack(bodyLook.getCharacterBody()),
-			head: this.getAnimationTexturePack(bodyLook.getHead()),
+			body: this.getAnimationTexturePack(look.getBody()),
+			head: this.getAnimationTexturePack(look.getHead())
 		};
-		if (bodyLook.getEars()) {
-			(bodyTextures.ears as { [key in keyof typeof Animation]: DirectionTexturePack }) = this.getAnimationTexturePack(bodyLook.getEars()!);
+
+		if (look.getEars()) {
+			bodyTextures.ears = this.getAnimationTexturePack(look.getEars()!);
+		}
+
+		if (look.getQuiver()) {
+			bodyTextures.quiver = this.getAnimationTexturePack(look.getQuiver()!);
+		}
+
+		if (look.getArrow()) {
+			bodyTextures.arrow = this.getAnimationTexturePack(look.getArrow()!);
 		}
 
 
 		const bodyAnimationModel: BodyAnimationModel = Object.values(Animation).reduce((acc, animation) => {
-			(acc[animation] as BodyAnimationModelDirection) = {
+			acc[animation] = {
 				animation: Object.values(AnimationDirection).reduce((acc, direction) => {
-					(acc[direction] as Array<AnimatedSprite>) = Object.values(BodyPart)
-					                                                  .filter(part => bodyTextures[part])
-					                                                  .map(part => this.spriteCreator.createAnimatedSprite(bodyTextures[part]![animation].animation[direction], 'normal'));
+					acc[direction] = Object.values(BodyPart)
+					                       .filter(part => bodyTextures[part])
+					                       .map(part => this.spriteCreator.createAnimatedSprite(bodyTextures[part]![animation].animation[direction], 'normal'));
 					return acc;
-				}, {} as { [key in keyof typeof AnimationDirection]: Array<AnimatedSprite> }),
+				}, {} as { [key in AnimationDirection]: Array<AnimatedSprite> }),
 				idle: Object.values(AnimationDirection).reduce((acc, direction) => {
-					(acc[direction] as Array<Sprite>) = Object.values(BodyPart)
-					                                          .filter(part => bodyTextures[part])
-					                                          .map(part => this.spriteCreator.createSprite(bodyTextures[part]![animation].idle[direction], 'normal'));
+					acc[direction] = Object.values(BodyPart)
+					                       .filter(part => bodyTextures[part])
+					                       .map(part => this.spriteCreator.createSprite(bodyTextures[part]![animation].idle[direction], 'normal'));
 					return acc;
-				}, {} as { [key in keyof typeof AnimationDirection]: Array<Sprite> })
+				}, {} as { [key in AnimationDirection]: Array<Sprite> })
 			};
 			return acc;
-		}, {} as { [key in keyof typeof Animation]: BodyAnimationModelDirection });
+		}, {} as { [key in Animation]: BodyAnimationModelDirection });
 
 		return bodyAnimationModel;
 	}
@@ -225,7 +236,7 @@ export class AnimationLoader {
 		return {
 			animation: { up: animation, left: animation, down: animation, right: animation },
 			idle: { up: idle!, left: idle!, down: idle!, right: idle! }
-		}
+		};
 
 	}
 

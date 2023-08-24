@@ -5,9 +5,10 @@ import { CharacterBodyLook } from '../api/model/character/look/CharacterBodyLook
 import { CharacterEquipmentLook } from '../api/model/character/look/CharacterEquipmentLook';
 import { CharacterLook } from '../api/model/character/look/CharacterLook';
 import { getLpcEarsDictionary } from '../api/model/LPC/dictionaries/LPCEarsDictionary';
-import { LPCBodyColor } from '../api/model/LPC/enums/LPCBodyColor';
-import { LPCEars } from '../api/model/LPC/enums/LPCEars';
-import { LPCGender } from '../api/model/LPC/enums/LPCGender';
+import { LPCBodyColor } from '../api/model/LPC/enums/body/LPCBodyColor';
+import { LPCEars } from '../api/model/LPC/enums/body/LPCEars';
+import { LPCGender } from '../api/model/LPC/enums/body/LPCGender';
+import { LPCPolearm } from '../api/model/LPC/enums/equipment/weapon/LPCPolearm';
 
 @Component({
 	selector: 'app-root',
@@ -20,12 +21,17 @@ export class AppRootComponent {
 	faCoffee = faAppleWhole;
 
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
-		LPCGender.male,
 		LPCBodyColor.zombie_green,
 		LPCEars.default
 	);
 
-	readonly characterLook = new CharacterLook(this.characterBody, new CharacterEquipmentLook());
+	readonly characterLook = new CharacterLook(
+		LPCGender.male,
+		this.characterBody,
+		new CharacterEquipmentLook(
+			LPCPolearm.halberd
+		)
+	);
 
 
 	private modelController!: CharacterModelController;
@@ -69,5 +75,53 @@ export class AppRootComponent {
 
 	slashDown() {
 		this.modelController.slashDown();
+	}
+
+	shootLeft() {
+		this.modelController.shootLeft();
+	}
+
+	shootRight() {
+		this.modelController.shootRight();
+	}
+
+	shootUp() {
+		this.modelController.shootUp();
+	}
+
+	shootDown() {
+		this.modelController.shootDown();
+	}
+
+	thrustLeft() {
+		this.modelController.thrustLeft();
+	}
+
+	thrustRight() {
+		this.modelController.thrustRight();
+	}
+
+	thrustUp() {
+		this.modelController.thrustUp();
+	}
+
+	thrustDown() {
+		this.modelController.thrustDown();
+	}
+
+	castLeft() {
+		this.modelController.castLeft();
+	}
+
+	castRight() {
+		this.modelController.castRight();
+	}
+
+	castUp() {
+		this.modelController.castUp();
+	}
+
+	castDown() {
+		this.modelController.castDown();
 	}
 }

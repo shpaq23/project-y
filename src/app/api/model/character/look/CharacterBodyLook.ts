@@ -1,18 +1,17 @@
-import { LPCNose } from './../../LPC/enums/LPCNose';
-import { LPCHairColor } from './../../LPC/enums/LPCHairColor';
-import { LPCBeard } from './../../LPC/enums/LPCBeard';
+import { LPCNose } from '../../LPC/enums/body/LPCNose';
+import { LPCHairColor } from '../../LPC/enums/body/LPCHairColor';
+import { LPCBeard } from '../../LPC/enums/body/LPCBeard';
 import { LPCDictionary } from '../../LPC/dictionaries/LPCDictionary';
-import { LPCBodyColor } from '../../LPC/enums/LPCBodyColor';
-import { LPCEars } from '../../LPC/enums/LPCEars';
-import { LPCEyes } from '../../LPC/enums/LPCEyes';
-import { LPCGender } from '../../LPC/enums/LPCGender';
-import { LPCHair } from '../../LPC/enums/LPCHair';
+import { LPCBodyColor } from '../../LPC/enums/body/LPCBodyColor';
+import { LPCEars } from '../../LPC/enums/body/LPCEars';
+import { LPCEyes } from '../../LPC/enums/body/LPCEyes';
+import { LPCGender } from '../../LPC/enums/body/LPCGender';
+import { LPCHair } from '../../LPC/enums/body/LPCHair';
 
 export class CharacterBodyLook {
 
 
 	constructor(
-		private readonly gender: LPCGender,
 		private readonly bodyColor: LPCBodyColor,
 		private readonly ears: LPCEars,
 		private readonly eyes?: LPCEyes,
@@ -24,12 +23,12 @@ export class CharacterBodyLook {
 	}
 
 
-	getCharacterBody(): string {
-		return LPCDictionary.body[this.gender][this.bodyColor];
+	getCharacterBody(gender: LPCGender): string {
+		return LPCDictionary.body[gender][this.bodyColor];
 	}
 
-	getHead(): string {
-		return LPCDictionary.head[this.gender][this.bodyColor];
+	getHead(gender: LPCGender): string {
+		return LPCDictionary.head[gender][this.bodyColor];
 	}
 
 	getEars(): string | undefined {

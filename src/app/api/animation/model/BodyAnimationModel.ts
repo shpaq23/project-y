@@ -3,8 +3,8 @@ import { AnimationDirection } from './AnimationDirection';
 import { Animation } from './Animation';
 
 export type BodyAnimationModelDirection = {
-	animation: { [key in keyof typeof AnimationDirection]: Array<AnimatedSprite> },
-	idle: { [key in keyof typeof AnimationDirection]: Array<Sprite> }
+	animation: { [key in AnimationDirection]: Array<AnimatedSprite> },
+	idle: { [key in AnimationDirection]: Array<Sprite> }
 }
 
-export type BodyAnimationModel = { [key in keyof typeof Animation]: BodyAnimationModelDirection };
+export type BodyAnimationModel = { [key in Animation]: BodyAnimationModelDirection };
