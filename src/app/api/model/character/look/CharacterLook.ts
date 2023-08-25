@@ -27,7 +27,11 @@ export class CharacterLook {
 	getEyes(): string | undefined {
 		return this.body.getEyes(this.gender);
 	}
-	
+	 
+	getHair(): string | undefined {
+		return this.body.getHair(this.gender);
+	}
+
 	getWeapon(): LPCWeaponStrings {
 		return this.equipment.getWeapon(this.gender);
 	}

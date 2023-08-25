@@ -10,7 +10,9 @@ import {
 	LPCEars,
 	LPCGender,
 	LPCEyes,
-	LPCPolearm
+	LPCPolearm,
+	LPCHair,
+	LPCHairColor
 } from '../api/model/LPC/enums';
 
 @Component({
@@ -26,7 +28,9 @@ export class AppRootComponent {
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
 		LPCBodyColor.zombie_green,
 		LPCEars.default,
-		LPCEyes.orange
+		LPCEyes.orange,
+		LPCHairColor.black,
+		LPCHair.afro
 	);
 
 	readonly characterLook = new CharacterLook(
@@ -47,7 +51,6 @@ export class AppRootComponent {
 	modelInitialized(controller: CharacterModelController): void {
 		this.modelController = controller;
 	}
-
 
 	moveLeft(): void {
 		this.modelController.walkLeft();

@@ -16,10 +16,10 @@ export class CharacterBodyLook {
 		private readonly bodyColor: LPCBodyColor,
 		private readonly ears: LPCEars,
 		private readonly eyes: LPCEyes,
+		private readonly hairColor: LPCHairColor,
+		private readonly hair: LPCHair,
 		private readonly nose?: LPCNose,
-		private readonly beard?: LPCBeard,
-		private readonly hairColor?: LPCHairColor,
-		private readonly hair?: LPCHair
+		private readonly beard?: LPCBeard
 	) {
 	}
 
@@ -45,6 +45,14 @@ export class CharacterBodyLook {
 			return undefined;
 		}
 		return LPCDictionary.eyes[gender][this.eyes];
+	}
+
+	getHair(gender : LPCGender): string | undefined { 
+		if(this.hair === LPCHair.none) {
+			return undefined;
+		}
+
+		return LPCDictionary.hair[gender][this.hair][this.hairColor];
 	}
 
 }

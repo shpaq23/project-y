@@ -17,7 +17,7 @@ export function getLpcHairDictionary(): LPCHairDictionary {
             }
 
             acc[hair] = Object.values(LPCHairColor).reduce((acc, color) => {
-                acc[color] = '';
+                acc[color] = 'assets/hair/' + hair + '/' + gender + '/' + color + '.png';
                 return acc;
             }, {} as { [color in LPCHairColor]: string });
 
