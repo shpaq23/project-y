@@ -5,10 +5,15 @@ import { CharacterBodyLook } from '../api/model/character/look/CharacterBodyLook
 import { CharacterEquipmentLook } from '../api/model/character/look/CharacterEquipmentLook';
 import { CharacterLook } from '../api/model/character/look/CharacterLook';
 import { getLpcEarsDictionary } from '../api/model/LPC/dictionaries/LPCEarsDictionary';
-import { LPCBodyColor } from '../api/model/LPC/enums/body/LPCBodyColor';
-import { LPCEars } from '../api/model/LPC/enums/body/LPCEars';
-import { LPCGender } from '../api/model/LPC/enums/body/LPCGender';
-import { LPCPolearm } from '../api/model/LPC/enums/equipment/weapon/LPCPolearm';
+import {
+	LPCBodyColor,
+	LPCEars,
+	LPCGender,
+	LPCEyes,
+	LPCPolearm,
+	LPCHair,
+	LPCHairColor
+} from '../api/model/LPC/enums';
 
 @Component({
 	selector: 'app-root',
@@ -22,7 +27,10 @@ export class AppRootComponent {
 
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
 		LPCBodyColor.zombie_green,
-		LPCEars.default
+		LPCEars.default,
+		LPCEyes.orange,
+		LPCHairColor.black,
+		LPCHair.afro
 	);
 
 	readonly characterLook = new CharacterLook(
@@ -43,7 +51,6 @@ export class AppRootComponent {
 	modelInitialized(controller: CharacterModelController): void {
 		this.modelController = controller;
 	}
-
 
 	moveLeft(): void {
 		this.modelController.walkLeft();

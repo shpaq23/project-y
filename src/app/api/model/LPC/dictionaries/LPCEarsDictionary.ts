@@ -1,5 +1,4 @@
-import { LPCBodyColor } from '../enums/body/LPCBodyColor';
-import { LPCEars } from '../enums/body/LPCEars';
+import { LPCBodyColor, LPCEars } from '../enums';
 
 export type LPCEarsDictionary = {
 	[ear in Exclude<LPCEars, 'default'>]: {

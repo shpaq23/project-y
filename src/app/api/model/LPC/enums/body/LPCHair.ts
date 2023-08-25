@@ -3,10 +3,10 @@ export enum LPCHair {
     afro = 'afro',
     curly_short = 'curly_short',
     curly_long = 'curly_long',
-    plain = 'plain',
     short_plain = 'short_plain',
     messy = 'messy',
+    long_messy = 'long_messy',
     long = 'long',
     wavy = 'wavy',
-    very_long_princess = 'very_long_princess',
+    princess = 'princess',
 }

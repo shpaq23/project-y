@@ -22,6 +22,8 @@ enum BodyPart {
 	head = 'head',
 	ears = 'ears',
 	arrows = 'arrow',
+	eyes = 'eyes',
+	hair = 'hair'
 }
 
 type BodyTextures = { [key in BodyPart]?: AnimationTexturePack };
@@ -150,6 +152,14 @@ export class AnimationLoader {
 
 		if (look.getArrow()) {
 			bodyTextures.arrow = this.getAnimationTexturePack(look.getArrow()!);
+		}
+
+		if (look.getEyes()) {
+			bodyTextures.eyes = this.getAnimationTexturePack(look.getEyes()!);
+		}
+
+		if(look.getHair()) {
+			bodyTextures.hair = this.getAnimationTexturePack(look.getHair()!);
 		}
 
 
