@@ -23,6 +23,7 @@ enum BodyPart {
 	ears = 'ears',
 	arrows = 'arrow',
 	eyes = 'eyes',
+	nose = 'nose',
 	hair = 'hair'
 }
 
@@ -157,11 +158,14 @@ export class AnimationLoader {
 		if (look.getEyes()) {
 			bodyTextures.eyes = this.getAnimationTexturePack(look.getEyes()!);
 		}
+		
+		if(look.getNose()) {
+			bodyTextures.nose = this.getAnimationTexturePack(look.getNose()!);
+		}
 
 		if(look.getHair()) {
 			bodyTextures.hair = this.getAnimationTexturePack(look.getHair()!);
 		}
-
 
 		const bodyAnimationModel: BodyAnimationModel = Object.values(Animation).reduce((acc, animation) => {
 			acc[animation] = {

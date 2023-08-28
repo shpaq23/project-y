@@ -28,6 +28,10 @@ export class CharacterLook {
 		return this.body.getEyes(this.gender);
 	}
 	 
+	getNose(): string | undefined {
+		return this.body.getNose();
+	}
+
 	getHair(): string | undefined {
 		return this.body.getHair(this.gender);
 	}

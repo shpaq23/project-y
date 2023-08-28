@@ -18,7 +18,7 @@ export class CharacterBodyLook {
 		private readonly eyes: LPCEyes,
 		private readonly hairColor: LPCHairColor,
 		private readonly hair: LPCHair,
-		private readonly nose?: LPCNose,
+		private readonly nose: LPCNose,
 		private readonly beard?: LPCBeard
 	) {
 	}
@@ -44,7 +44,16 @@ export class CharacterBodyLook {
 		if(this.eyes === LPCEyes.default) {
 			return undefined;
 		}
+
 		return LPCDictionary.eyes[gender][this.eyes];
+	}
+
+	getNose(): string | undefined {
+		if(this.nose === LPCNose.default) {
+			return undefined;
+		}
+
+		return LPCDictionary.nose[this.nose][this.bodyColor];
 	}
 
 	getHair(gender : LPCGender): string | undefined { 

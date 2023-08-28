@@ -8,7 +8,7 @@ export type LPCEarsDictionary = {
 
 
 export function getLpcEarsDictionary(): LPCEarsDictionary {
-	const basePath = 'assets/head/ears';
+	const basePath = 'assets/lpc/head/ears';
 	return Object.values(LPCEars).reduce((acc, ear) => {
 		if (ear === LPCEars.default) {
 			return acc;

@@ -4,8 +4,13 @@
 @tailwind utilities;
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'LifeCraft';
 	background-color: black;
 	color: darkgoldenrod;
 	user-select: none;
+}
+
+@font-face {
+    font-family: 'LifeCraft';
+    src: url('assets/fonts/LifeCraft.ttf');
 }

@@ -12,7 +12,7 @@ export function getLpcEyesDictionary(): LPCEyesDictionary {
             if (eye === LPCEyes.default) {
                 return acc;
             }
-			(acc[eye] as string) = 'assets/eyes/' + gender + '/' + eye + '.png';
+			(acc[eye] as string) = 'assets/lpc/eyes/' + gender + '/' + eye + '.png';
 			return acc;
 		}, {} as { [eyes in keyof typeof LPCEyes]: string });
 		return acc;

@@ -25,33 +25,33 @@ export interface LPCWeaponStrings {
 
 export const longSword: LPCWeaponStrings = {
 	universal: {
-		normal: 'assets/weapon/sword/longsword/longsword.png',
-		behind: 'assets/weapon/sword/longsword/universal_behind/longsword.png'
+		normal: 'assets/lpc/weapon/sword/longsword/longsword.png',
+		behind: 'assets/lpc/weapon/sword/longsword/universal_behind/longsword.png'
 	},
 
 	slash: {
 		size: 192,
-		normal: 'assets/weapon/sword/longsword/attack_slash/longsword.png',
-		behind: 'assets/weapon/sword/longsword/attack_slash/behind/longsword.png'
+		normal: 'assets/lpc/weapon/sword/longsword/attack_slash/longsword.png',
+		behind: 'assets/lpc/weapon/sword/longsword/attack_slash/behind/longsword.png'
 	},
 
 	thrust: {
 		size: 192,
-		normal: 'assets/weapon/sword/longsword/attack_thrust/longsword.png',
-		behind: 'assets/weapon/sword/longsword/attack_thrust/behind/longsword.png'
+		normal: 'assets/lpc/weapon/sword/longsword/attack_thrust/longsword.png',
+		behind: 'assets/lpc/weapon/sword/longsword/attack_thrust/behind/longsword.png'
 	}
 }
 
 export const katana: LPCWeaponStrings = {
 	walk: {
 		size: 128,
-		normal: 'assets/weapon/sword/katana/walk/katana.png',
-		behind: 'assets/weapon/sword/katana/walk/behind/katana.png'
+		normal: 'assets/lpc/weapon/sword/katana/walk/katana.png',
+		behind: 'assets/lpc/weapon/sword/katana/walk/behind/katana.png'
 	},
 
 	slash: {
 		size: 128,
-		normal: 'assets/weapon/sword/katana/slash/katana.png',
-		behind: 'assets/weapon/sword/katana/slash/behind/katana.png'
+		normal: 'assets/lpc/weapon/sword/katana/slash/katana.png',
+		behind: 'assets/lpc/weapon/sword/katana/slash/behind/katana.png'
 	}
 }

@@ -9,7 +9,7 @@ export type LPCWeaponDictionary = {
 };
 
 
-const basePath = 'assets/weapon/'
+const basePath = 'assets/lpc/weapon/'
 
 const halberd: LPCWeaponStrings = {
 	universal: {

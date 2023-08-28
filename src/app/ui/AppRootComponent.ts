@@ -12,7 +12,8 @@ import {
 	LPCEyes,
 	LPCPolearm,
 	LPCHair,
-	LPCHairColor
+	LPCHairColor,
+	LPCNose
 } from '../api/model/LPC/enums';
 
 @Component({
@@ -30,7 +31,8 @@ export class AppRootComponent {
 		LPCEars.default,
 		LPCEyes.orange,
 		LPCHairColor.black,
-		LPCHair.afro
+		LPCHair.afro,
+		LPCNose.big
 	);
 
 	readonly characterLook = new CharacterLook(
