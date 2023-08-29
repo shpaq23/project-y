@@ -4,7 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRootComponent } from './AppRootComponent';
-import { ModelViewerComponent } from './model-viewer/ModelViewerComponent';
+import { ModelViewerComponent } from '../generic-components/model-viewer/ModelViewerComponent';
+import { CharacterCreationComponent } from './character-creation/CharacterCreationComponent';
 
 @NgModule({
 	imports: [
@@ -14,7 +15,8 @@ import { ModelViewerComponent } from './model-viewer/ModelViewerComponent';
 		RouterOutlet
 	],
 	declarations: [
-		AppRootComponent
+		AppRootComponent,
+		CharacterCreationComponent
 	],
 	providers: [],
 	bootstrap: [AppRootComponent]
