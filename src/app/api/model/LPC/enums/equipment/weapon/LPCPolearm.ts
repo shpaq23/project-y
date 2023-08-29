@@ -1,4 +1,5 @@
 export enum LPCPolearm {
+	cane = 'cane',
 	halberd = 'halberd',
 	scythe = 'scythe',
 	spear = 'spear',

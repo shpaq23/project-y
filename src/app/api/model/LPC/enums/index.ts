@@ -9,3 +9,7 @@ export * from './body/LPCNose';
 export * from './equipment/weapon/LPCWeapon';
 export * from './equipment/weapon/LPCWeaponStrings';
 export *  from './equipment/weapon/LPCPolearm';
+export *  from './equipment/weapon/LPCBlunt';
+export *  from './equipment/weapon/LPCMagic';
+export *  from './equipment/weapon/LPCRanged';
+export *  from './equipment/weapon/LPCSword';

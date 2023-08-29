@@ -10,10 +10,14 @@ import {
 	LPCEars,
 	LPCGender,
 	LPCEyes,
-	LPCPolearm,
 	LPCHair,
 	LPCHairColor,
-	LPCNose
+	LPCNose,
+	LPCPolearm,
+	LPCSword,
+	LPCMagic,
+	LPCRanged,
+	LPCBlunt
 } from '../api/model/LPC/enums';
 
 @Component({
@@ -39,10 +43,9 @@ export class AppRootComponent {
 		LPCGender.male,
 		this.characterBody,
 		new CharacterEquipmentLook(
-			LPCPolearm.halberd
+			LPCRanged.recurve_bow
 		)
 	);
-
 
 	private modelController!: CharacterModelController;
 

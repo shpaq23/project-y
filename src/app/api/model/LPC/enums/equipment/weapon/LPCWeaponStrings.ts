@@ -15,7 +15,7 @@ export interface LPCWeaponStrings {
 		normal: string;
 		behind?: string
 	}
-
+	
 	thrust?: {
 		size: number;
 		normal: string;
