@@ -1,0 +1,37 @@
+<model-viewer
+  (initialized)="modelInitialized($event)"
+  [characterLook]="characterLook"
+></model-viewer>
+
+<button btn>Test Button</button>
+<div class="flex-1">
+  <!--	<selector [options]="weapons" (selectedOptionChange)="onSelectChange($event)"></selector>-->
+</div>
+<div class="flex flex-col">
+  <button (click)="moveLeft()">Move Left</button>
+  <button (click)="moveRight()">Move Right</button>
+  <button (click)="moveUp()">Move Up</button>
+  <button (click)="moveDown()">Move Down</button>
+
+  <button (click)="slashLeft()">Slash Left</button>
+  <button (click)="slashRight()">Slash Right</button>
+  <button (click)="slashUp()">Slash Up</button>
+  <button (click)="slashDown()">Slash Down</button>
+
+  <button (click)="shootLeft()">Shoot Left</button>
+  <button (click)="shootRight()">Shoot Right</button>
+  <button (click)="shootUp()">Shoot Up</button>
+  <button (click)="shootDown()">Shoot Down</button>
+
+  <button (click)="thrustLeft()">Thrust Left</button>
+  <button (click)="thrustRight()">Thrust Right</button>
+  <button (click)="thrustUp()">Thrust Up</button>
+  <button (click)="thrustDown()">Thrust Down</button>
+
+  <button (click)="castLeft()">Cast Left</button>
+  <button (click)="castRight()">Cast Right</button>
+  <button (click)="castUp()">Cast Up</button>
+  <button (click)="castDown()">Cast Down</button>
+</div>
+
+<router-outlet />

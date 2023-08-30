@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --yellow: darkgoldenrod;
+  --dark-yellow: #b8860b;
+  --red: #7f0e08;
+  --dark-red: #5f0e08;
+  --blue: #2f4556;
+  --dark-blue: #1f4556;
+  --white: #d8d1ca;
+  --gray: #706f6f;
+  --dark-gray: #505050;
+  --black: #1e1e1e;
+}
+
+body {
+  font-family: 'WowFont', sans-serif;
+  background-color: black;
+  color: var(--yellow);
+  user-select: none;
+}
+
+@font-face {
+  font-family: 'WowFont';
+  src: url('assets/fonts/wowFont.otf');
+}
