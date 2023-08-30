@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { faAppleWhole } from '@fortawesome/free-solid-svg-icons';
 import { CharacterModelController } from '../api/animation/controllers/CharacterModelController';
 import { CharacterBodyLook } from '../api/model/character/look/CharacterBodyLook';
 import { CharacterEquipmentLook } from '../api/model/character/look/CharacterEquipmentLook';
@@ -17,7 +16,7 @@ import {
 	LPCSword,
 	LPCMagic,
 	LPCRanged,
-	LPCBlunt
+	LPCBlunt, LPCWeapon
 } from '../api/model/LPC/enums';
 
 @Component({
@@ -28,7 +27,11 @@ import {
 })
 export class AppRootComponent {
 	title = 'project-y';
-	faCoffee = faAppleWhole;
+
+
+	readonly weapons = Object.values(LPCSword);
+
+	private selectedSword: LPCSword | undefined;
 
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
 		LPCBodyColor.zombie_green,
@@ -136,4 +139,10 @@ export class AppRootComponent {
 	castDown() {
 		this.modelController.castDown();
 	}
+
+	onSelectChange(event: string): void {
+		this.selectedSword = event as LPCSword;
+		console.log(this.selectedSword);
+	}
+
 }
