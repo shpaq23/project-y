@@ -1,8 +1,10 @@
-<div>
+<div class="selector-container">
   <button btn (click)="previousValue()" [disabled]="getOptionIndex() === 0">
     <fa-icon [icon]="arrowLeft"></fa-icon>
   </button>
-  <span> {{selectedOption}} </span>
+  <div class="options-wrapper">
+		{{selectedOption}}
+  </div>
   <button
     btn
     (click)="nextValue()"

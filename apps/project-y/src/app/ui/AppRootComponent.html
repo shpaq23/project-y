@@ -1,13 +1,14 @@
 <model-viewer
+		class="flex-item"
   (initialized)="modelInitialized($event)"
   [characterLook]="characterLook"
 ></model-viewer>
 
-<button btn>Test Button</button>
-<div class="flex-1">
-  <!--	<selector [options]="weapons" (selectedOptionChange)="onSelectChange($event)"></selector>-->
+<!--<button btn>Test Button</button>-->
+<div class="flex-item">
+  	<selector [options]="weapons" (selectedOptionChange)="onSelectChange($event)"></selector>
 </div>
-<div class="flex flex-col">
+<div class="flex-item">
   <button (click)="moveLeft()">Move Left</button>
   <button (click)="moveRight()">Move Right</button>
   <button (click)="moveUp()">Move Up</button>
