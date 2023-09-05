@@ -1,5 +1,4 @@
-<model-viewer
-		class="flex-item"
+<model-viewer class="flex-item"
   (initialized)="modelInitialized($event)"
   [characterLook]="characterLook"
 ></model-viewer>
@@ -8,6 +7,11 @@
 <div class="flex-item">
   	<selector [options]="weapons" (selectedOptionChange)="onSelectChange($event)"></selector>
 </div>
+
+<div class="flex-item">
+	<button tooltip-directive="This is a tooltip">Hover me</button>
+</div>
+
 <div class="flex-item">
   <button (click)="moveLeft()">Move Left</button>
   <button (click)="moveRight()">Move Right</button>
@@ -36,3 +40,4 @@
 </div>
 
 <router-outlet />
+<component-outlet/>
