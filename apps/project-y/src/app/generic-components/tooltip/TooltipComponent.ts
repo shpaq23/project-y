@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Type } from '@angular/core';
+import { RichText } from '../rich-text/RichText';
+import { RichTextComponent } from '../rich-text/RichTextComponent';
 
 @Component({
 	selector: 'tooltip-container',
@@ -6,8 +8,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 	styleUrls: ['./TooltipComponent.scss'],
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: []
+	imports: [
+		RichTextComponent
+	]
 })
 export class TooltipComponent {
-	@Input() text: string = '';
+
+	@Input({ required: true })
+	richText!: RichText;
 }

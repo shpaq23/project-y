@@ -1,0 +1,7 @@
+<div class="rich-text-container">
+	<ng-container *ngIf="richText.isComponent()" #componentOutlet/>
+
+	<span *ngIf="richText.isText()" >
+		{{richText.getText()}}
+	</span>
+</div>

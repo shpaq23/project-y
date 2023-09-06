@@ -5,6 +5,8 @@ import { CharacterEquipmentLook } from '../api/model/character/look/CharacterEqu
 import { CharacterLook } from '../api/model/character/look/CharacterLook';
 import { getLpcEarsDictionary } from '../api/model/LPC/dictionaries/LPCEarsDictionary';
 import { LPCBodyColor, LPCEars, LPCEyes, LPCGender, LPCHair, LPCHairColor, LPCNose, LPCRanged, LPCSword } from '../api/model/LPC/enums';
+import { ModelViewerComponent } from '../generic-components/model-viewer/ModelViewerComponent';
+import { RichText } from '../generic-components/rich-text/RichText';
 
 @Component({
 	selector: 'app-root',
@@ -15,10 +17,7 @@ import { LPCBodyColor, LPCEars, LPCEyes, LPCGender, LPCHair, LPCHairColor, LPCNo
 export class AppRootComponent {
 	title = 'project-y';
 
-	readonly weapons = Object.values(LPCSword);
-
-	private selectedSword: LPCSword | undefined;
-
+	readonly weapons: Array<LPCSword> = Object.values(LPCSword);
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
 		LPCBodyColor.zombie_green,
 		LPCEars.default,
@@ -27,13 +26,18 @@ export class AppRootComponent {
 		LPCHair.afro,
 		LPCNose.big
 	);
-
 	readonly characterLook = new CharacterLook(
 		LPCGender.male,
 		this.characterBody,
 		new CharacterEquipmentLook(LPCRanged.recurve_bow)
 	);
-
+	readonly richText = RichText.component({
+		component: ModelViewerComponent,
+		params: {
+			characterLook: this.characterLook
+		}
+	});
+	private selectedSword: LPCSword | undefined;
 	private modelController!: CharacterModelController;
 
 	constructor() {

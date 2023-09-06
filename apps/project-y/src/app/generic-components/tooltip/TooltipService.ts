@@ -13,10 +13,11 @@ export class TooltipService {
 		const marginHorizontal: number = (screenWidth - rootElementWidth)/2;
 		const marginVertical: number = (screenHeight - rootElementHeight)/2;
 
-		const verticalDistance: number = 50;
-		const horizontalDistance: number = 10;
+		const verticalDistance: number = 46;
+		const horizontalDistance: number = 8;
 
 		const elementPosition = elementRef.nativeElement.getBoundingClientRect();
+
 		tooltipElement.style.top = `${elementPosition.top - marginVertical - verticalDistance}px`;
 		tooltipElement.style.left = `${elementPosition.left - marginHorizontal + elementPosition.width + horizontalDistance}px`;
 

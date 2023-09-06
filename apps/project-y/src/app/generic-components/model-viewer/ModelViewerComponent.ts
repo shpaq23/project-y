@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Application } from 'pixi.js';
 import { AnimationLoader } from '../../api/animation/AnimationLoader';
 import { CharacterModelController } from '../../api/animation/controllers/CharacterModelController';
@@ -13,7 +13,7 @@ import { CharacterLook } from '../../api/model/character/look/CharacterLook';
 	providers: [SpriteCreator, AnimationLoader],
 	standalone: true
 })
-export class ModelViewerComponent implements OnInit {
+export class ModelViewerComponent implements OnInit, OnDestroy {
 
 	@Input({ required: true })
 	characterLook!: CharacterLook;
@@ -46,6 +46,10 @@ export class ModelViewerComponent implements OnInit {
 		);
 		this.attachGameCanvas();
 		this.initialized.emit(this.modelAnimationController);
+	}
+
+	ngOnDestroy(): void {
+		this.game.destroy();
 	}
 
 	private attachGameCanvas(): void {

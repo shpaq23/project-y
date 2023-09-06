@@ -4,6 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ComponentOutletComponent } from '../generic-components/outlet/ComponentOutletComponent';
 import { ComponentOutletService } from '../generic-components/outlet/ComponentOutletService';
+import { RichTextComponent } from '../generic-components/rich-text/RichTextComponent';
+import { RichTextPipe } from '../generic-components/rich-text/RichTextPipe';
 import { SelectorComponent } from '../generic-components/selector/SelectorComponent';
 import { TooltipComponent } from '../generic-components/tooltip/TooltipComponent';
 import { AppRootComponent } from './AppRootComponent';
@@ -24,7 +26,9 @@ import { TooltipDirective } from '../generic-components/tooltip/TooltipDirective
 		SelectorComponent,
 		TooltipComponent,
 		ComponentOutletComponent,
-		TooltipDirective
+		TooltipDirective,
+		RichTextComponent,
+		RichTextPipe
 	],
 	declarations: [AppRootComponent, CharacterCreationComponent],
 	bootstrap: [AppRootComponent]
