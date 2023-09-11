@@ -1,7 +1,7 @@
 import { Injector, Type } from '@angular/core';
 
 export type RichTextComponentConfigParams<T extends {} = {}> = {
-	readonly [P in keyof T]?: T[P] extends (...any: Array<any>) => any ? never : T[P]
+	[K in keyof T as T[K] extends (...args: Array<any>) => any ? never : K]?: T[K];
 };
 
 interface RichTextConfigComponent<T extends {} = {}> {

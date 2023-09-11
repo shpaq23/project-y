@@ -15,7 +15,8 @@ import { RichText } from '../generic-components/rich-text/RichText';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppRootComponent {
-	title = 'project-y';
+
+	title: string = 'project-y';
 
 	readonly weapons: Array<LPCSword> = Object.values(LPCSword);
 	readonly characterBody: CharacterBodyLook = new CharacterBodyLook(
